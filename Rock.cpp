@@ -6,7 +6,7 @@
 */
 
 #include "Rock.h"
-
+	
 	Rock::Rock(){
 		x = 200;
 		y = 200;
