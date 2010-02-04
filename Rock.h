@@ -58,7 +58,7 @@ class Rock{
 
 	Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints);
 	
-	Rock(float xCoord, float yCoord, float maxSpeed, int rockSize, int rockPoints);
+	//Rock(float xCoord, float yCoord, float maxSpeed, int rockSize, int rockPoints);
 
 	Rock(int m, int n);
 	

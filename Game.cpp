@@ -59,9 +59,11 @@
 
 		SDL_GL_SwapBuffers();
 
-		//rate = 60;	
-		//SDL_initFramerate(&fpsm);
-		//SDL_setFramerate(&fpsm,rate);
+		#ifndef _WIN32
+		rate = 60;	
+		SDL_initFramerate(&fpsm);
+		SDL_setFramerate(&fpsm,rate);
+		#endif
 	
 		time (&time1);
 		std::cout << std::endl;
@@ -111,7 +113,8 @@
 			
 				for (int i=0; i<level.getRocks(); i++)
 				{
-					rocks.push_back(Rock((rand()%800),(rand()%600),((float(rand()) / float((RAND_MAX+1))) + 0.5),(float(rand()) / float((RAND_MAX+1)) + 0.5),40,(rand()%4)+12));
+					//rocks.push_back(Rock((rand()%800),(rand()%600),((float(rand()) / float((RAND_MAX+1))) + 0.5),(float(rand()) / float((RAND_MAX+1)) + 0.5),40,(rand()%4)+12));
+					rocks.push_back(Rock(randomFloat(0,800),randomFloat(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12)));
 				}
 		}
 		moveShots();
@@ -326,9 +329,14 @@
 		*Display and delay *
 		*************/
 		SDL_GL_SwapBuffers();
-		Sleep(10);
 		
-		//SDL_framerateDelay(&fpsm);
+		#if _WIN32
+		Sleep(20);
+		#endif
+		
+		#ifndef _WIN32
+		SDL_framerateDelay(&fpsm);
+		#endif
 	}
 
 
