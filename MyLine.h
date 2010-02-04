@@ -10,6 +10,11 @@
 #ifndef _MyLine
 #define _MyLine
 
+
+#if _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
 

@@ -8,12 +8,17 @@
 #ifndef _Ship
 #define _Ship
 
+#if _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
 
 #include <GL/gl.h>
 
-#include <SDL_framerate.h>
+//#include <SDL_framerate.h>
+#include <SDL.h>
 #include <new>
 #include <string>
 #include <math.h>
@@ -38,10 +43,12 @@ class Ship{
 	bool dead;
 	
 	bool reload;
-	Uint32 reloadTimer;
+	//Uint32 reloadTimer;
+	int reloadTimer;
 	int reloadTime; //= 666;
 
-	Uint32 deadTimer;
+	//Uint32 deadTimer;
+	int deadTimer;
 	int deadTime;
 
 	public:

@@ -8,12 +8,16 @@
 #ifndef _Shot
 #define _Shot
 
+#if _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
 
 #include <GL/gl.h>
 
-#include <SDL_framerate.h>
+//#include <SDL_framerate.h>
 #include <new>
 #include <string>
 #include <math.h>
@@ -29,12 +33,15 @@ class Shot{
 	float speed;
 	int age;
 	int maxAge;
+	bool blank;
 
 	float x;
 	float y;
 
 
 	public:
+
+	Shot(bool blanked);
 
 	Shot(float m);
 
@@ -63,6 +70,8 @@ class Shot{
 	void incAge(int m);
 	
 	void wrap();
+	
+	bool isBlank();
 
 };
 

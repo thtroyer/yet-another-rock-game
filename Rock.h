@@ -17,6 +17,10 @@
 #define PLAYAREA_HEIGHT 600
 #endif
 
+#if _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
 

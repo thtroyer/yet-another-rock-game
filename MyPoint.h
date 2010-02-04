@@ -10,6 +10,10 @@
 #ifndef _MyPoint
 #define _MyPoint
 
+#if _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
 

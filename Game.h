@@ -12,12 +12,17 @@
 #ifndef _Game
 #define _Game
 
+#if _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
 
 #include <GL/gl.h>
 
-#include <SDL_framerate.h>
+#include <SDL.h>
+//#include <SDL_framerate.h>
 #include <new>
 #include <string>
 #include <math.h>
@@ -57,7 +62,7 @@ class Game{
 	std::list<Rock> rocks;
 	
 	//Framerate variables
-	FPSmanager fpsm;
+	//FPSmanager fpsm;
 	int rate;
 	int frames;
 	time_t time1;

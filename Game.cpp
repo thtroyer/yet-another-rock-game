@@ -30,6 +30,7 @@
 	}
 	
 	bool Game::init(){
+
 		srand(time(NULL));
 
 		if (SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -58,10 +59,9 @@
 
 		SDL_GL_SwapBuffers();
 
-		
-		rate = 60;	
-		SDL_initFramerate(&fpsm);
-		SDL_setFramerate(&fpsm,rate);
+		//rate = 60;	
+		//SDL_initFramerate(&fpsm);
+		//SDL_setFramerate(&fpsm,rate);
 	
 		time (&time1);
 		std::cout << std::endl;
@@ -71,8 +71,9 @@
 		
 	   gameRunning = true;
 	  	nextLevel = true;
-	   	
-	   player.forceSpawn();
+	
+
+		player.forceSpawn();
 	
 		return 0;
 	}
@@ -81,13 +82,13 @@
 		while(gameRunning){
 			levelEvents();
 				
-			frames++;	
+			/*frames++;	
 			if(frames>1000){
 				time(&time2);
 				frames=0;
 				std::cout << 1000.0/(difftime (time2, time1)) << "fps" << std::endl;
 				time (&time1);
-			}
+			}*/
 	
 			collisionEvents();
 			//playerEvents();
@@ -119,14 +120,21 @@
 	}
 
 	void Game::moveShots(){
+
+		if(shots.size()==0){
+			shots.push_back(Shot(true));
+		}
+
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			if(it->checkAge()){
 					it->move();
 					it->wrap();
 					it->incAge();
 			}
-			else
+			else{
 				it = shots.erase(it);
+				break;
+			}
 		}
 	}
 
@@ -158,6 +166,13 @@
 		** Check for collision between rocks and shots
 		*/
 
+		//for (std::list<Shot>::iterator itS = shots.begin(); itS != shots.end(); itS++){
+			//for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
+		
+		std::list<Shot>::iterator itS = shots.begin();
+		
+		bool breakOut = false;
+		//while(itS != shots.end()){
 		for (std::list<Shot>::iterator itS = shots.begin(); itS != shots.end(); itS++){
 			for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
 				float shotX = itS->getX();
@@ -184,8 +199,16 @@
 					}		
 					itR = rocks.erase(itR);
 					itS = shots.erase(itS);
-					break;
+					breakOut = true;
+					
+					if(breakOut){
+						break;
+					}
 				}
+				
+			}
+			if(breakOut){
+					break;
 			}
 		}
 
@@ -303,7 +326,9 @@
 		*Display and delay *
 		*************/
 		SDL_GL_SwapBuffers();
-		SDL_framerateDelay(&fpsm);
+		Sleep(10);
+		
+		//SDL_framerateDelay(&fpsm);
 	}
 
 

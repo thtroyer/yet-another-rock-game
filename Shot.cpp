@@ -7,14 +7,21 @@
 
 #include "Shot.h"
 
+	Shot::Shot(bool blanked){
+		blank = blanked;
+	}
+
+
 	Shot::Shot(float Speed){
 		speed = Speed;
 		maxAge = 200;
+		blank = false;
 	}
 
 	Shot::Shot(float m, int mAge){
 		speed = m;
 		maxAge = mAge;
+		blank = false;
 	}
 
 	Shot::Shot(Ship* owner, float m, int mAge){
@@ -27,6 +34,7 @@
 
 		x = owner->point[0].getX();
 		y = owner->point[0].getY();
+		blank = false;
 	}
 	
 	Shot::Shot(){
@@ -90,6 +98,10 @@
 		else if (y < 0)
 			y = PLAYAREA_HEIGHT -1;
 
+	}
+
+	bool Shot::isBlank(){
+		return blank;
 	}
 
 
