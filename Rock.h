@@ -25,6 +25,7 @@
 #include <cstdlib>
 
 #include <GL/gl.h>
+#include <SDL.h>
 
 #include <new>
 #include <string>
@@ -35,8 +36,7 @@
 #include "MyPoint.h"
 
 #include "random.h"
-
-const float pi = 3.1415926;
+#include "consts.h"
 
 class Rock{
 	float x;
@@ -64,7 +64,7 @@ class Rock{
 	
 	float getMaxRadius();
 
-	void move();
+	void move(Uint32 deltaTime);
 
 	void recalc();
 

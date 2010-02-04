@@ -18,11 +18,6 @@ using std::string;
 
 int main(int argc, char **argv){
 
-	std::cout << "min: -5, max 5" << std::endl;
-	for(int i = 0; i < 20; i++){
-		std::cout << randomFloat(-5,5) << std::endl;
-	}
-	
 	Game * game = new Game;
 	
 	if(game->init()){

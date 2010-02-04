@@ -57,9 +57,9 @@
 	float Rock::getMaxRadius(){
 		return maxRadius; 
 	}
-	void Rock::move(){
-		x = x + dx;
-		y = y + dy;
+	void Rock::move(Uint32 deltaTime){
+		x = x + (dx * deltaTime * deltaTimeConst);
+		y = y + (dy * deltaTime * deltaTimeConst);
 		//recalc();
 	}
 

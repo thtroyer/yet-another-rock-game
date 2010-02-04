@@ -44,6 +44,8 @@
 #include "Rock.h"
 #include "Level.h"
 
+#include "consts.h"
+
 class Game{
 	private:
 	/*
@@ -74,7 +76,10 @@ class Game{
 	time_t time1;
 	time_t time2;
 
-	
+	Uint32 lastFrameTime;
+	Uint32 currFrameTime;
+	Uint32 deltaTime;
+
 	Level level;
 	bool nextLevel;
 	

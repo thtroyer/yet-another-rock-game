@@ -25,6 +25,8 @@
 #include <time.h>
 #include <list>
 
+#include "consts.h"
+
 class MyPoint{
 		float x;
 		float y;

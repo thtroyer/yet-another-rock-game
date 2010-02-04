@@ -29,6 +29,7 @@
 #include "MyPoint.h"
 
 #include "random.h"
+#include "consts.h"
 
 class MyLine{
 	public:

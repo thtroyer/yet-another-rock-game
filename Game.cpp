@@ -20,6 +20,7 @@
 			keyDown[i] = false;
 		line = new MyLine[2];
 	}
+
 	Game::~Game(){
 		delete [] keyDown;
 		delete [] line;
@@ -29,7 +30,12 @@
 		return gameRunning;
 	}
 	
+
 	bool Game::init(){
+
+		//lastFrameTime = SDL_GetTicks();
+		currFrameTime = SDL_GetTicks();
+		deltaTime = 0;
 
 		srand(time(NULL));
 
@@ -81,7 +87,13 @@
 	}
 
 	void Game::loop(){
+		
+
 		while(gameRunning){
+			lastFrameTime = currFrameTime;
+			currFrameTime = SDL_GetTicks();
+			deltaTime = currFrameTime - lastFrameTime;
+			
 			levelEvents();
 				
 			/*frames++;	
@@ -114,7 +126,7 @@
 				for (int i=0; i<level.getRocks(); i++)
 				{
 					//rocks.push_back(Rock((rand()%800),(rand()%600),((float(rand()) / float((RAND_MAX+1))) + 0.5),(float(rand()) / float((RAND_MAX+1)) + 0.5),40,(rand()%4)+12));
-					rocks.push_back(Rock(randomFloat(0,800),randomFloat(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12)));
+					rocks.push_back(Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12)));
 				}
 		}
 		moveShots();
@@ -130,9 +142,9 @@
 
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			if(it->checkAge()){
-					it->move();
+					it->move(deltaTime);
 					it->wrap();
-					it->incAge();
+					it->incAge(deltaTime);
 			}
 			else{
 				it = shots.erase(it);
@@ -145,7 +157,7 @@
 		for (std::list<Rock>::iterator it = rocks.begin();
 		     it != rocks.end();
 			  it++){
-			it->move();
+			it->move(int(deltaTime));
 			it->wrap();
 		}
 
@@ -156,7 +168,7 @@
 		if (player.isDead())
 			player.safeSpawn(rocks);
 
-		player.moveShip();
+		player.moveShip(deltaTime);
 		player.wrap();
 		player.calcPoints();
 		
@@ -169,13 +181,10 @@
 		** Check for collision between rocks and shots
 		*/
 
-		//for (std::list<Shot>::iterator itS = shots.begin(); itS != shots.end(); itS++){
-			//for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
-		
 		std::list<Shot>::iterator itS = shots.begin();
 		
 		bool breakOut = false;
-		//while(itS != shots.end()){
+
 		for (std::list<Shot>::iterator itS = shots.begin(); itS != shots.end(); itS++){
 			for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
 				float shotX = itS->getX();
@@ -189,15 +198,16 @@
 
 					if (rockSize > 20){
 						for(int i=0; i<randomInt(1,3); i++){
-							float speed = randomFloat(0,2);
+							float xSpeed = randomFloat(-30,30);
+							float ySpeed = randomFloat(-30,30);
 							float angle = randomFloat(0,pi);
 							
-							rocks.push_back(Rock((rockX + rand()%10),
-						   	                  (rockY + rand()%10),
-														(itR->getDx() + (speed * cos(angle))),
-														(itR->getDy() + (speed * sin(angle))),											
-														(rockSize - 10),
-														(rand()%4)+12));
+							rocks.push_back(Rock((rockX + randomInt(-20,20)),
+						   	                     (rockY + randomInt(-20,20)),
+												 (itR->getDx() + (xSpeed * cos(angle))),
+												 (itR->getDy() + (ySpeed * sin(angle))),											
+												 (rockSize - 10),
+												 (randomInt(6,12))));
 						}
 					}		
 					itR = rocks.erase(itR);
@@ -274,16 +284,18 @@
 						line[0].setY(0,((int)line[0].getY(0))+1);	
 						break;
 					case 275: //right
-						player.rotateShip(pi/25);
+						//player.rotateShip(pi/25, deltaTime);
+						player.rotateShip(pi/3, deltaTime);
 						line[0].setX(0,((int)line[0].getX(0))+1);	
 						break;
 					case 276: //left
-						player.rotateShip(-pi/25);
+						//player.rotateShip(-pi/25, deltaTime);
+						player.rotateShip(-pi/3, deltaTime);
 						line[0].setX(0,((int)line[0].getX(0))-1);	
 						break;
 					case 122:
 						if(player.fire()){
-							shots.push_back(Shot(&player, 2.5, 500));
+							shots.push_back(Shot(&player, 35, 3500));
 						}
 						break;
 				}	
@@ -331,11 +343,11 @@
 		SDL_GL_SwapBuffers();
 		
 		#if _WIN32
-		Sleep(20);
+		//Sleep(20);
 		#endif
 		
 		#ifndef _WIN32
-		SDL_framerateDelay(&fpsm);
+		//SDL_framerateDelay(&fpsm);
 		#endif
 	}
 

@@ -14,7 +14,7 @@
 
 	Shot::Shot(float Speed){
 		speed = Speed;
-		maxAge = 200;
+		//maxAge = 50000;
 		blank = false;
 	}
 
@@ -29,8 +29,10 @@
 		maxAge = mAge;
 		speed = m;
 
+		//dy = owner->getYSpeed() + (speed * cos(owner->getAngle()));
+		//dx = -1 * (-1 * owner->getXSpeed() + (speed * sin(owner->getAngle())));
 		dy = owner->getDy() + (speed * cos(owner->getAngle()));
-		dx =-1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
+		dx = -1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
 
 		x = owner->point[0].getX();
 		y = owner->point[0].getY();
@@ -44,10 +46,13 @@
 	}
 
 
-	void Shot::fire(Ship* owner){	
-		dy = owner->getDy() + (speed * cos(owner->getAngle()));
-		dx =-1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
+	void Shot::fire(Ship* owner){
+		//dy = owner->getYSpeed() + (speed * cos(owner->getAngle()));
+		//dx = -1 * (-1 * owner->getXSpeed() + (speed * sin(owner->getAngle())));
 		
+		dy = owner->getDx() + (speed * cos(owner->getAngle()));
+		dx = -1 * (-1 * owner->getDy() + (speed * sin(owner->getAngle())));
+
 		x = owner->point[0].getX();
 		y = owner->point[0].getY();
 
@@ -60,9 +65,9 @@
 		return y;
 	}
 
-	void Shot::move(){
-		x = x + dx;
-		y = y + dy;
+	void Shot::move(Uint32 deltaTime){
+		x = x + (dx * deltaTime * deltaTimeConst);
+		y = y + (dy * deltaTime * deltaTimeConst);
 	}
 
 	int Shot::getAge(){
@@ -80,11 +85,11 @@
 	}
 
 	void Shot::incAge(){
-		age++;
+	//	age++;
 	}
 
-	void Shot::incAge(int m){
-		age += m;
+	void Shot::incAge(int deltaTime){
+		age += deltaTime;
 	}
 	
 	void Shot::wrap(){

@@ -26,6 +26,8 @@
 
 #include "Ship.h"
 
+#include "consts.h"
+
 class Shot{
 	float dx;
 	float dy;
@@ -57,7 +59,7 @@ class Shot{
 	
 	float getY();
 
-	void move();
+	void move(Uint32 deltaTime);
 	
 	int getAge();
 

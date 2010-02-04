@@ -28,6 +28,8 @@
 #include "Rock.h"
 #include "MyLine.h"
 
+#include "consts.h"
+
 class Ship{
 	float x;
 	float y;
@@ -63,13 +65,19 @@ class Ship{
 
 	float getDy();
 
+	//float getXSpeed();
+
+	//float getYSpeed();
+
 	float getAngle();
 
-	void rotateShip(float rad);
+	void rotateShip(float rad, Uint32 deltaTime);
 
-	void moveShip();
+	void moveShip(Uint32 deltaTime);
 
 	void addThrust(int m);
+
+	
 
 	void calcPoints();
 
