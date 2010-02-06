@@ -75,7 +75,7 @@ class Ship{
 
 	void moveShip(Uint32 deltaTime);
 
-	void addThrust(int m);
+	void addThrust(int m, Uint32 deltaTime);
 
 	
 

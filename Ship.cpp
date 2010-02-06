@@ -63,9 +63,9 @@
 		y = y + (dy * deltaTime * deltaTimeConst);
 	}
 
-	void Ship::addThrust(int m){
+	void Ship::addThrust(int m, Uint32 deltaTime){
 		if(!dead){
-			thrust = maxThrust*m;
+			thrust = maxThrust * m * (deltaTime * deltaTimeConst);
 			dx = dx - (thrust * sin(angle)) * .8;
 			dy = dy + (thrust * cos(angle)) * .8;
 		}

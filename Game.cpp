@@ -276,11 +276,11 @@
 						gameRunning = !gameRunning;
 						break;
 					case 273: //up
-						player.addThrust(1);
+						player.addThrust(150, deltaTime);
 						line[0].setY(0,((int)line[0].getY(0))-1);	
 						break;
 					case 274: //down
-						player.addThrust(-1);
+						player.addThrust(-150, deltaTime);
 						line[0].setY(0,((int)line[0].getY(0))+1);	
 						break;
 					case 275: //right
