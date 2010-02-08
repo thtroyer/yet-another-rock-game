@@ -39,16 +39,6 @@
 		return dy;
 	}
 	
-	//to compute speed (with constant) apart from deltaTime
-	//to be used in moveShip() and to create shots
-	/*float Ship::getXSpeed(){
-		return (dx * .01);
-	}
-
-	float Ship::getYSpeed(){
-		return (dy * .01);
-	}*/
-
 
 	float Ship::getAngle(){
 		return angle;

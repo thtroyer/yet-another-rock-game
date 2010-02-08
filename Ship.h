@@ -3,6 +3,7 @@
 ** YARG Ship.h 
 **	Copyright Tom Troyer 2010 (tom.troyer@gmail.com)
 ** Released under GPLv3
+** Some legacy code here too.
 */
 
 #ifndef _Ship
@@ -17,8 +18,7 @@
 
 #include <GL/gl.h>
 
-//#include <SDL_framerate.h>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <new>
 #include <string>
 #include <math.h>
@@ -47,7 +47,7 @@ class Ship{
 	bool reload;
 	//Uint32 reloadTimer;
 	int reloadTimer;
-	int reloadTime; //= 666;
+	int reloadTime;
 
 	//Uint32 deadTimer;
 	int deadTimer;

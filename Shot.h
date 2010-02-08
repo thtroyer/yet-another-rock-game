@@ -17,7 +17,6 @@
 
 #include <GL/gl.h>
 
-//#include <SDL_framerate.h>
 #include <new>
 #include <string>
 #include <math.h>
@@ -77,5 +76,4 @@ class Shot{
 
 };
 
-//#include "Shot.cpp"
 #endif

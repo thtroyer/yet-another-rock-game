@@ -93,19 +93,20 @@
 			lastFrameTime = currFrameTime;
 			currFrameTime = SDL_GetTicks();
 			deltaTime = currFrameTime - lastFrameTime;
-			
+					
+	
 			levelEvents();
 				
-			/*frames++;	
-			if(frames>1000){
+			frames++;	
+			/*if(frames>1000){
 				time(&time2);
 				frames=0;
 				std::cout << 1000.0/(difftime (time2, time1)) << "fps" << std::endl;
 				time (&time1);
+				std::cout << "deltaTime: " << deltaTime << std::endl;
 			}*/
 	
 			collisionEvents();
-			//playerEvents();
 			keyEvents();
 			render();
 		}
@@ -125,7 +126,6 @@
 			
 				for (int i=0; i<level.getRocks(); i++)
 				{
-					//rocks.push_back(Rock((rand()%800),(rand()%600),((float(rand()) / float((RAND_MAX+1))) + 0.5),(float(rand()) / float((RAND_MAX+1)) + 0.5),40,(rand()%4)+12));
 					rocks.push_back(Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12)));
 				}
 		}
@@ -293,7 +293,8 @@
 						player.rotateShip(-pi/3, deltaTime);
 						line[0].setX(0,((int)line[0].getX(0))-1);	
 						break;
-					case 122:
+					case 32: //Spacebar
+					case 122: //z, shoot
 						if(player.fire()){
 							shots.push_back(Shot(&player, 35, 3500));
 						}
@@ -342,13 +343,6 @@
 		*************/
 		SDL_GL_SwapBuffers();
 		
-		#if _WIN32
-		//Sleep(20);
-		#endif
-		
-		#ifndef _WIN32
-		//SDL_framerateDelay(&fpsm);
-		#endif
 	}
 
 

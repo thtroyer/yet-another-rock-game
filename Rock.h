@@ -25,7 +25,7 @@
 #include <cstdlib>
 
 #include <GL/gl.h>
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #include <new>
 #include <string>
@@ -87,6 +87,5 @@ class Rock{
 	float getDy();
 };
 
-//#include "Rock.cpp"
 #endif
 

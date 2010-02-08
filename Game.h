@@ -25,7 +25,7 @@
 
 #include <GL/gl.h>
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <new>
 #include <string>
 #include <math.h>
@@ -36,7 +36,6 @@
 #define WINDOW_HEIGHT 600
 #define PLAYAREA_WIDTH 800
 #define PLAYAREA_HEIGHT 600
-//#include "SDL_ttf.h"
 
 #include "random.h"
 #include "Ship.h"

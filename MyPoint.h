@@ -45,6 +45,5 @@ class MyPoint{
 		bool getRight();
 };
 
-//#include "MyPoint.cpp"
 #endif
 

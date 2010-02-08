@@ -14,7 +14,7 @@
 
 	Shot::Shot(float Speed){
 		speed = Speed;
-		//maxAge = 50000;
+		maxAge = 50000;
 		blank = false;
 	}
 
@@ -29,8 +29,6 @@
 		maxAge = mAge;
 		speed = m;
 
-		//dy = owner->getYSpeed() + (speed * cos(owner->getAngle()));
-		//dx = -1 * (-1 * owner->getXSpeed() + (speed * sin(owner->getAngle())));
 		dy = owner->getDy() + (speed * cos(owner->getAngle()));
 		dx = -1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
 
@@ -47,9 +45,6 @@
 
 
 	void Shot::fire(Ship* owner){
-		//dy = owner->getYSpeed() + (speed * cos(owner->getAngle()));
-		//dx = -1 * (-1 * owner->getXSpeed() + (speed * sin(owner->getAngle())));
-		
 		dy = owner->getDx() + (speed * cos(owner->getAngle()));
 		dx = -1 * (-1 * owner->getDy() + (speed * sin(owner->getAngle())));
 
