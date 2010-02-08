@@ -9,6 +9,6 @@ Arrow keys -- controls.
 Spacebar -- bullets.
 q -- Quit.
 
-I indend to add scoring, limited lives, and some general playability fixes and tweaks in the next version.
+I intend to add scoring, limited lives, and some general playability fixes and tweaks in the next version.
 
 Enjoy.
