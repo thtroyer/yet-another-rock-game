@@ -65,11 +65,6 @@
 
 		SDL_GL_SwapBuffers();
 
-		#ifndef _WIN32
-		rate = 60;	
-		SDL_initFramerate(&fpsm);
-		SDL_setFramerate(&fpsm,rate);
-		#endif
 	
 		time (&time1);
 		std::cout << std::endl;

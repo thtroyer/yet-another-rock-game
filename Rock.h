@@ -44,6 +44,7 @@ class Rock{
 	float dx;
 	float dy;
 	float maxRadius;
+	float dAngle;
 
 	int size;
 	int numPoints;
