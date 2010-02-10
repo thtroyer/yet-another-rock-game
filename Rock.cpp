@@ -23,7 +23,7 @@
 
 	}
 
-	Rock::Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints){
+	Rock::Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints, float rotAngle){
 		//initialize rock variables;
 		x = xCoord;
 		y = yCoord;
@@ -32,6 +32,8 @@
 		size = rockSize;
 		numPoints = rockPoints;
 		maxRadius = 0;
+		//dAngle = randomFloat(-1,1) * pi/50;
+		dAngle = rotAngle;		
 
 		point = new MyPoint[numPoints];
 
@@ -43,9 +45,12 @@
 			if(isMax > maxRadius)
 				maxRadius = isMax;
 		}
+
+
 		std::cout << "Rock created @ (" << x << "," << y;
 		std::cout << ") , [" << dx << "," << dy << "]" << std::endl;
 	}
+
 
 	
 	Rock::Rock(int m, int n){ //(numPoints, size)
@@ -53,14 +58,15 @@
 		size = n;
 		point = new MyPoint[m];
 	}
-	
+
 	float Rock::getMaxRadius(){
 		return maxRadius; 
 	}
 	void Rock::move(Uint32 deltaTime){
 		x = x + (dx * deltaTime * deltaTimeConst);
 		y = y + (dy * deltaTime * deltaTimeConst);
-		//recalc();
+
+		rotate(deltaTime);
 	}
 
 	void Rock::recalc(){
@@ -82,6 +88,32 @@
 		else if (y < 0)
 			y = PLAYAREA_HEIGHT -1;
 
+	}
+
+	void Rock::rotate(Uint32 deltaTime){
+		for(int i=0; i<numPoints; i++){
+			float pointX = point[i].getX();
+			float pointY = point[i].getY();
+			float pointLen = sqrt(pow(pointX,2) + pow(pointY,2));
+
+			float angle = atan2(pointY, pointX);
+			
+			angle = angle + dAngle * deltaTimeConst;
+
+			pointX = pointLen * cos(angle);
+			pointY = pointLen * sin(angle);
+
+			point[i].setX(pointX);
+			point[i].setY(pointY);
+		}
+	}
+
+	void Rock::setdAngle(float angle){
+		dAngle = angle;
+	}
+
+	float Rock::getdAngle(){
+		return dAngle;
 	}
 
 	void Rock::setX(float m){
@@ -110,7 +142,7 @@
 
 	float Rock::getDx(){
 		return dx;
-	}
+	}	
 	
 	float Rock::getDy(){
 		return dy;

@@ -57,7 +57,7 @@ class Rock{
 
 	Rock();
 
-	Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints);
+	Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints, float rotAngle);
 	
 	//Rock(float xCoord, float yCoord, float maxSpeed, int rockSize, int rockPoints);
 
@@ -83,9 +83,15 @@ class Rock{
 	
 	int getSize();
 
+	void setdAngle(float);
+
+	float getdAngle();
+
 	float getDx();
 
 	float getDy();
+
+	void rotate(Uint32 deltaTime);
 };
 
 #endif

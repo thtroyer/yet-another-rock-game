@@ -119,9 +119,8 @@
 				std::cout << "level: " << level.getLevel() << std::endl << "rocks: " << level.getRocks();
 				std::cout << std::endl;
 			
-				for (int i=0; i<level.getRocks(); i++)
-				{
-					rocks.push_back(Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12)));
+				for (int i=0; i<level.getRocks(); i++){
+					rocks.push_back(Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12), randomFloat(-2,2)*pi/50));
 				}
 		}
 		moveShots();
@@ -198,11 +197,12 @@
 							float angle = randomFloat(0,pi);
 							
 							rocks.push_back(Rock((rockX + randomInt(-20,20)),
-						   	                     (rockY + randomInt(-20,20)),
-												 (itR->getDx() + (xSpeed * cos(angle))),
-												 (itR->getDy() + (ySpeed * sin(angle))),											
-												 (rockSize - 10),
-												 (randomInt(6,12))));
+						   	                  (rockY + randomInt(-20,20)),
+												      (itR->getDx() + (xSpeed * cos(angle))),
+												      (itR->getDy() + (ySpeed * sin(angle))),	
+												      (rockSize - 10),
+												      (randomInt(6,12)),
+							                     (itR->getdAngle() + randomFloat(-2,2)*pi/50)));
 						}
 					}		
 					itR = rocks.erase(itR);
