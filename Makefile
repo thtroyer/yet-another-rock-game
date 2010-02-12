@@ -7,7 +7,7 @@ OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o Game.o random.o
 yarg: main.o $(OBJECTS)
 	$(CC) main.o $(OBJECTS) $(CFLAGS) -o yarg
 
-main.o: main.cpp
+main.o: main.cpp $(SOURCES) 
 	$(CC) -c $(LDFLAGS) main.cpp
 
 Level.o : Level.cpp Level.h
