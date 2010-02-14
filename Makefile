@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-lSDL -lGL -lGLU -lpthread -lSDL 
+CFLAGS=-lSDL -lGL -lGLU -lpthread -lSDL -lfreetype -lftgl 
 LDFLAGS=-g -I/usr/include/SDL
 SOURCES=MyLine.cpp MyLine.h MyPoint.cpp MyPoint.h Rock.h Rock.cpp Ship.cpp Ship.h Shot.cpp Shot.h Game.h Game.cpp random.h 
 OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o Game.o random.o 
@@ -7,7 +7,7 @@ OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o Game.o random.o
 yarg: main.o $(OBJECTS)
 	$(CC) main.o $(OBJECTS) $(CFLAGS) -o yarg
 
-main.o: main.cpp $(SOURCES) 
+main.o: main.cpp 
 	$(CC) -c $(LDFLAGS) main.cpp
 
 Level.o : Level.cpp Level.h

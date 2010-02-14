@@ -115,6 +115,8 @@ class Ship{
 
 	void spawnShip();
 	
+	void spawnShip(float, float);
+	
 	void forceSpawn();
 
 	void safeSpawn(std::list<Rock> rocks);

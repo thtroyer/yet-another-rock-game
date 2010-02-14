@@ -20,13 +20,17 @@
 #include <cstdlib>
 
 #include <GL/gl.h>
+#include <FTGL/ftgl.h>
 
 #include <SDL/SDL.h>
 #include <new>
 #include <string>
+#include <sstream>
 #include <math.h>
 #include <time.h>
 #include <list>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -41,6 +45,7 @@
 
 #include "consts.h"
 
+
 class Game{
 	private:
 	/*
@@ -50,6 +55,9 @@ class Game{
 	//SDL stuff
 	SDL_Surface * screen; 
 	SDL_Event event;
+
+	FTGLBitmapFont* font;
+	FTGLPixmapFont* txtCenter;
 
 	//Keyboard bool array
 	bool * keyDown;
@@ -75,6 +83,9 @@ class Game{
 	
 	bool gameRunning;
 
+	int score;
+	int lives;
+
 	public:
 
 	Game();
@@ -86,6 +97,8 @@ class Game{
 	void doActions();
 
 	void loop();
+	void newGame();
+	void endGame();
 
 	void levelEvents();
 	void moveShots();
@@ -93,7 +106,8 @@ class Game{
 	void movePlayer();
 
 	void drawInterface();
-	
+	void drawFont();	
+
 	void collisionEvents();
 	void playerEvents();
 	void keyEvents();

@@ -19,6 +19,7 @@
 		for(int i=0; i<323; i++)
 			keyDown[i] = false;
 		line = new MyLine[2];
+
 	}
 
 	Game::~Game(){
@@ -64,7 +65,10 @@
 		glLoadIdentity();
 
 		SDL_GL_SwapBuffers();
+	
 
+		font = new FTGLBitmapFont("cour.ttf");
+		txtCenter = new FTGLPixmapFont("cour.ttf");
 	
 		time (&time1);
 		std::cout << std::endl;
@@ -72,9 +76,7 @@
 		
 		player.calcPoints();
 		
-	   gameRunning = true;
-	  	nextLevel = true;
-	
+		newGame();
 
 		player.forceSpawn();
 	
@@ -82,9 +84,9 @@
 	}
 
 	void Game::loop(){
-		
 
 		while(gameRunning){
+
 			lastFrameTime = currFrameTime;
 			currFrameTime = SDL_GetTicks();
 			deltaTime = currFrameTime - lastFrameTime;
@@ -101,14 +103,65 @@
 				std::cout << "deltaTime: " << deltaTime << std::endl;
 			}*/
 	
-			collisionEvents();
+					collisionEvents();
 			keyEvents();
+			
+
 			render();
 		}
+		//delete font;
 	}
+
+	void Game::newGame(){
+	   gameRunning = true;
+	  	nextLevel = true;	
+
+		score = 0;
+		lives = 5;
+	}
+	
 
 	void Game::drawInterface(){
 	}
+
+	void Game::drawFont(){
+	
+		//int score = 35;
+		//int lives = 5;	
+	
+		glColor3f(1.0f, 1.0f, 1.0f);	
+		glRasterPos2f(15.0f,17.0f);
+		font->FaceSize(15);
+		
+		std::stringstream strScore;
+		strScore << "Score: " << score;
+		font->Render(strScore.str().c_str());
+		
+		//font->Render(strScore);
+
+		glRasterPos2f(15.0f,30.0f);
+
+		std::stringstream strLives;
+		strLives << "Lives: " << lives;
+		font->Render(strLives.str().c_str());
+
+		//font->Render("Hello World");	
+	
+		if(lives<=0){
+		//if(true){
+			glColor3f(1.0f, 1.0f, 1.0f);
+			glRasterPos2f(325.0f, 300.0f);
+			txtCenter->FaceSize(20);
+	
+			txtCenter->Render("Game over");
+			
+			glRasterPos2f(325.0f, 330.0f);
+			std::stringstream strScore;
+			strScore << "Score: " << score;
+			txtCenter->Render(strScore.str().c_str());
+		}
+
+	}	
 
 	void Game::levelEvents(){
 		if (nextLevel){
@@ -130,9 +183,9 @@
 
 	void Game::moveShots(){
 
-		if(shots.size()==0){
-			shots.push_back(Shot(true));
-		}
+	//	if(shots.size()==0){
+	//		shots.push_back(Shot(true));
+	//	}
 
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			if(it->checkAge()){
@@ -159,7 +212,7 @@
 
 	void Game::movePlayer(){
 		
-		if (player.isDead())
+		if (player.isDead() && (lives > 0))
 			player.safeSpawn(rocks);
 
 		player.moveShip(deltaTime);
@@ -205,10 +258,11 @@
 							                     (itR->getdAngle() + randomFloat(-2,2)*pi/50)));
 						}
 					}		
+					score += 100;
 					itR = rocks.erase(itR);
 					itS = shots.erase(itS);
 					breakOut = true;
-					
+						
 					if(breakOut){
 						break;
 					}
@@ -232,6 +286,7 @@
 			float distance = sqrt(pow((playerX-rockX),2) + (pow((playerY-rockY),2)));
 			if(distance < (itR->getSize() + player.getSize())){
 				player.die();
+				lives--;
 			}
 			i++;
 		}
@@ -304,6 +359,8 @@
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		//drawInterface();	
+
+		drawFont();
 	
 		player.draw();
 	

@@ -165,7 +165,6 @@
 
 	
 	void Ship::spawnShip(){
-		if (SDL_GetTicks() > deadTimer){
 			dead = false;
 			x = 400;
 			y = 300;
@@ -173,7 +172,16 @@
 			dy = 0;
 			angle = pi;	
 			reloadTimer = SDL_GetTicks();
-		}
+	}
+	
+	void Ship::spawnShip(float spawnX, float spawnY){
+		dead = false;
+		x = spawnX;
+		y = spawnY;
+		dx = 0;
+		dy = 0;
+		angle = (randomFloat(0,2*pi));	
+		reloadTimer = SDL_GetTicks();
 	}
 	
 	void Ship::forceSpawn(){
@@ -187,23 +195,44 @@
 	}
 
 	void Ship::safeSpawn(std::list<Rock> rocks){
-		bool spawn = true;
+		if (!(SDL_GetTicks() > deadTimer)){
+			return;
+		}
+	
+		bool spawned = false;
 		float distance =0;
 		float rockX = 0;
 		float rockY = 0;
-		float centreX = 300;
-		float centreY = 200;
-		for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
-			rockX = itR->getX();
-			rockY = itR->getY();
-			distance = sqrt(pow((rockX - centreX),2) + pow((rockY - centreY),2));
-			if(distance < 50){
-				spawn = false;
+		float minSpawnX = 150;
+		float maxSpawnX = 650;
+		float minSpawnY = 200;
+		float maxSpawnY = 400;
+		
+		float checkSpawnX;
+		float checkSpawnY;
+	
+		bool rockFlag;
+
+		while(!spawned){
+			rockFlag = false;
+			checkSpawnX = randomFloat(minSpawnX, maxSpawnX);
+			checkSpawnY = randomFloat(minSpawnY, maxSpawnY);
+		
+			for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
+				rockX = itR->getX();
+				rockY = itR->getY();
+				distance = sqrt(pow((rockX - checkSpawnX),2) + pow((rockY - checkSpawnY),2));
+				if(distance < 50){
+					rockFlag = true;
+				}
+			}
+			if(!rockFlag){
+				spawned = true;
 			}
 		}
 
-		if(spawn)
-			spawnShip();
+		if(spawned)
+			spawnShip(checkSpawnX, checkSpawnY);
 	}
 
 	void Ship::draw(){
