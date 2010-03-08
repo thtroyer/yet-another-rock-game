@@ -27,6 +27,7 @@
 
 #include "Rock.h"
 #include "MyLine.h"
+#include "WarpEffect.h"
 
 #include "consts.h"
 
@@ -44,6 +45,11 @@ class Ship{
 	int size;
 	bool dead;
 	
+	Uint32 spawnTimer;
+	//const int spawnTime = 250;
+	
+	WarpEffect* warpSpawn;
+	
 	bool reload;
 	//Uint32 reloadTimer;
 	int reloadTimer;
@@ -53,6 +59,8 @@ class Ship{
 	int deadTimer;
 	int deadTime;
 
+	bool active;
+	
 	public:
 	
 	MyPoint* point;
@@ -76,6 +84,7 @@ class Ship{
 	void moveShip(Uint32 deltaTime);
 
 	void addThrust(int m, Uint32 deltaTime);
+	
 
 	
 

@@ -9,7 +9,9 @@
 
 	Ship::Ship(){
 		deadTimer = SDL_GetTicks();
-		deadTime = deadTimer;
+		spawnTimer = SDL_GetTicks();
+		//deadTime = deadTimer;
+		active = false;
 		//safeSpawn();
 		spawnShip();
 		point = new MyPoint[3];
@@ -21,6 +23,8 @@
 		speed = 0;
 		reloadTime = 200;
 		reloadTimer = SDL_GetTicks();
+		
+		warpSpawn = new WarpEffect();
 
 		deadTime = 3000;
 
@@ -151,6 +155,7 @@
 
 	void Ship::die(){
 		dead = true;
+		active = false;
 		x = -100;
 		y = -100;
 		dx = 0;
@@ -160,7 +165,8 @@
 	}
 
 	bool Ship::isDead(){
-		return dead;
+		return (dead || !active);
+		//return dead;
 	}
 
 	
@@ -172,6 +178,7 @@
 			dy = 0;
 			angle = pi;	
 			reloadTimer = SDL_GetTicks();
+			spawnTimer = SDL_GetTicks() + 250;
 	}
 	
 	void Ship::spawnShip(float spawnX, float spawnY){
@@ -182,10 +189,12 @@
 		dy = 0;
 		angle = (randomFloat(0,2*pi));	
 		reloadTimer = SDL_GetTicks();
+		spawnTimer = SDL_GetTicks() + 250;
 	}
 	
 	void Ship::forceSpawn(){
 		dead = false;
+		active = true;
 		x = 400;
 		y = 300;
 		dx = 0;
@@ -195,6 +204,18 @@
 	}
 
 	void Ship::safeSpawn(std::list<Rock> rocks){
+		//std::cout << "dead: " << dead << " active: " << active << std::endl;
+		//std::cout << "sdlticks: " << SDL_GetTicks() << " timer: " << spawnTimer << std::endl;
+		
+		if(!dead && !active){
+			//std::cout << "1" << std::endl;
+			if(SDL_GetTicks() > spawnTimer){
+				std::cout << "yay!" << std::endl;
+				active = true;
+			}
+			return;
+		}
+		
 		if (!(SDL_GetTicks() > deadTimer)){
 			return;
 		}
@@ -231,14 +252,24 @@
 			}
 		}
 
-		if(spawned)
+		if(spawned){
 			spawnShip(checkSpawnX, checkSpawnY);
+			warpSpawn->initiate(checkSpawnX, checkSpawnY, 250);
+		}
+			
 	}
 
 	void Ship::draw(){
-	
+		
+		warpSpawn->incAge();
+		warpSpawn->draw();
+		
+		if(!active){
+			return;
+		}
+		
 		glColor3f(.9, .9, .9);
-
+		
 		glBegin(GL_LINES);
 			glVertex2f(getCoords(2,0), getCoords(2,1));
 			glVertex2f(getCoords(0,0), getCoords(0,1));
@@ -256,5 +287,5 @@
 			glVertex2f(getCoords(2,0), getCoords(2,1));
 		glEnd();
 
-		glColor3f(.9,.9,.9);
+		
 	}

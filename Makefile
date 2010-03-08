@@ -1,8 +1,8 @@
 CC=g++
 CFLAGS=-lSDL -lGL -lGLU -lpthread -lSDL -lfreetype -lftgl 
 LDFLAGS=-g -I/usr/include/SDL
-SOURCES=MyLine.cpp MyLine.h MyPoint.cpp MyPoint.h Rock.h Rock.cpp Ship.cpp Ship.h Shot.cpp Shot.h Game.h Game.cpp random.h 
-OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o Game.o random.o 
+SOURCES=MyLine.cpp MyLine.h MyPoint.cpp MyPoint.h Rock.h Rock.cpp Ship.cpp Ship.h Shot.cpp Shot.h WarpEffect.h WarpEffect.cpp Game.h Game.cpp random.h 
+OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o WarpEffect.o Game.o random.o 
 
 yarg: main.o $(OBJECTS)
 	$(CC) main.o $(OBJECTS) $(CFLAGS) -o yarg
@@ -27,6 +27,9 @@ Ship.o : Ship.cpp Ship.h
 
 Shot.o : Shot.cpp Shot.h
 	$(CC) -c $(LDFLAGS) Shot.cpp
+
+WarpEffect.o : WarpEffect.cpp WarpEffect.h
+	$(CC) -c $(LDFLAGS) WarpEffect.cpp
 
 Game.o : Game.cpp Game.h
 	$(CC) -c $(LDFLAGS) Game.cpp

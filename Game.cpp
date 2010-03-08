@@ -34,6 +34,8 @@
 
 	bool Game::init(){
 
+		test = new WarpEffect(50,50);
+		
 		//lastFrameTime = SDL_GetTicks();
 		currFrameTime = SDL_GetTicks();
 		deltaTime = 0;
@@ -63,6 +65,9 @@
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+		
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		SDL_GL_SwapBuffers();
 	
@@ -90,7 +95,11 @@
 			lastFrameTime = currFrameTime;
 			currFrameTime = SDL_GetTicks();
 			deltaTime = currFrameTime - lastFrameTime;
-					
+			
+			if(deltaTime > 5000){ //this shouldn't happen
+				deltaTime = 1;
+				std::cout << "Error in deltaTime" << std::endl;
+			}
 	
 			levelEvents();
 				
@@ -214,7 +223,8 @@
 		
 		if (player.isDead() && (lives > 0))
 			player.safeSpawn(rocks);
-
+		
+		
 		player.moveShip(deltaTime);
 		player.wrap();
 		player.calcPoints();
@@ -367,6 +377,8 @@
 		/************
 		*Draw shots *
 		*************/
+		glColor3f(.9, .9, .9);
+
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			glBegin(GL_POLYGON);				
 				glVertex2f(it->getX() - 1, it->getY() + 1);
@@ -389,7 +401,15 @@
 			}
 			glEnd();
 		}
-			
+		
+		/************
+		*Draw effects*
+		*************/
+		
+		
+		//test->incAge(deltaTime);
+		//test->draw();
+		
 		/************
 		*Display and delay *
 		*************/

@@ -42,6 +42,7 @@
 #include "Shot.h"
 #include "Rock.h"
 #include "Level.h"
+#include "WarpEffect.h"
 
 #include "consts.h"
 
@@ -77,6 +78,8 @@ class Game{
 	Uint32 lastFrameTime;
 	Uint32 currFrameTime;
 	Uint32 deltaTime;
+
+ 	WarpEffect* test;
 
 	Level level;
 	bool nextLevel;
