@@ -58,7 +58,7 @@ class Shot{
 	
 	float getY();
 
-	void move(Uint32 deltaTime);
+	void move(float deltaTime);
 	
 	int getAge();
 

@@ -27,7 +27,7 @@ int main(int argc, char **argv){
 
 	game->loop();
 		
-	SDL_Quit();
+//	SDL_Quit();
 	delete game;
 
 	return 0;

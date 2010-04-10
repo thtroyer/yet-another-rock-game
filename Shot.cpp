@@ -60,7 +60,7 @@
 		return y;
 	}
 
-	void Shot::move(Uint32 deltaTime){
+	void Shot::move(float deltaTime){
 		//increment age here as well;
 		age += deltaTime;
 		x = x + (dx * deltaTime * deltaTimeConst);

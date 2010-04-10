@@ -18,7 +18,10 @@
 
 #include <GL/gl.h>
 
-#include <SDL/SDL.h>
+//#include <SDL/SDL.h>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+
 #include <new>
 #include <string>
 #include <math.h>
@@ -44,20 +47,21 @@ class Ship{
 	float maxThrust;
 	int size;
 	bool dead;
-	
-	Uint32 spawnTimer;
+	sf::Clock* Clock;
+
+	float spawnTimer;
 	//const int spawnTime = 250;
 	
 	WarpEffect* warpSpawn;
 	
 	bool reload;
 	//Uint32 reloadTimer;
-	int reloadTimer;
-	int reloadTime;
+	float reloadTimer;
+	float reloadTime;
 
 	//Uint32 deadTimer;
-	int deadTimer;
-	int deadTime;
+	float deadTimer;
+	float deadTime;
 
 	bool active;
 	
@@ -79,11 +83,11 @@ class Ship{
 
 	float getAngle();
 
-	void rotateShip(float rad, Uint32 deltaTime);
+	void rotateShip(float rad, float deltaTime);
 
-	void moveShip(Uint32 deltaTime);
+	void moveShip(float deltaTime);
 
-	void addThrust(int m, Uint32 deltaTime);
+	void addThrust(int m, float deltaTime);
 	
 
 	

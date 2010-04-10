@@ -27,7 +27,7 @@
 #include <SFML/Graphics.hpp>
 
 
-#include <SDL/SDL.h>
+//#include <SDL/SDL.h>
 #include <new>
 #include <string>
 #include <sstream>
@@ -60,17 +60,22 @@ class Game{
 
 	//SDL stuff
 	//SDL_Surface * screen; 
-	sf::RenderWindow *App;
-	sf::Clock *Clock;
+	sf::RenderWindow* App;
+	sf::Clock* Clock;
 	//sf::Event *Event;
 	//SDL_Event event;
 
+	sf::Font* statsFont;
+	sf::Font* centerFont;
+	sf::String* strScore;
+	sf::String* strMessage;
 
 	FTGLBitmapFont* font;
 	FTGLPixmapFont* txtCenter;
 
 	//Keyboard bool array
 	//bool * keyDown;
+	bool KEY_UP, KEY_DOWN, KEY_RIGHT, KEY_LEFT, KEY_SHOOT;
 
 	//Player stuff
 	MyLine* line;
@@ -86,7 +91,7 @@ class Game{
 
 	//Uint32 lastFrameTime;
 	//Uint32 currFrameTime;
-	Uint32 deltaTime;
+	float deltaTime;
 
  	WarpEffect* test;
 

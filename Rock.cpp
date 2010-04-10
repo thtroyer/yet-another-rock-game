@@ -62,7 +62,7 @@
 	float Rock::getMaxRadius(){
 		return maxRadius; 
 	}
-	void Rock::move(Uint32 deltaTime){
+	void Rock::move(float deltaTime){
 		x = x + (dx * deltaTime * deltaTimeConst);
 		y = y + (dy * deltaTime * deltaTimeConst);
 
@@ -90,7 +90,7 @@
 
 	}
 
-	void Rock::rotate(Uint32 deltaTime){
+	void Rock::rotate(float deltaTime){
 		for(int i=0; i<numPoints; i++){
 			float pointX = point[i].getX();
 			float pointY = point[i].getY();

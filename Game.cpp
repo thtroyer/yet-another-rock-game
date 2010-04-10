@@ -19,12 +19,19 @@
 		for(int i=0; i<323; i++)
 			keyDown[i] = false;
 		line = new MyLine[2];*/
-
+		KEY_UP = false;
+		KEY_DOWN = false;
+		KEY_RIGHT = false;
+		KEY_LEFT = false;
+		KEY_SHOOT = false;
 	}
 
 	Game::~Game(){
 		//delete [] keyDown;
-		delete [] line;
+		//delete [] line;
+		//delete App;
+		//delete Clock;
+
 	}
 	
 	bool Game::running(){
@@ -37,6 +44,9 @@
 		App = new sf::RenderWindow(sf::VideoMode(800,600,24), "yarg");
 		Clock = new sf::Clock();
 
+		//Correct for this later
+		App->PreserveOpenGLStates(true);
+
 		glClearDepth(1.f);
 		glClearColor(0.f,0.f,0.f,0.f);
 
@@ -48,9 +58,23 @@
 		//gluPerspective(90.f,1.f,1.f,500.f);
 		glOrtho(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
 		//Event = new sf::Event();
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		test = new WarpEffect(50,50);
-		
+	
+		statsFont = new sf::Font();
+		centerFont = new sf::Font();
+
+		statsFont->LoadFromFile("cour.ttf",15);
+		centerFont->LoadFromFile("cour.ttf",30);
+
+		strScore = new sf::String();
+		strMessage = new sf::String();
+
+		strScore->SetFont(*statsFont);
+		strMessage->SetFont(*centerFont);
+
 		//lastFrameTime = SDL_GetTicks();
 		//currFrameTime = SDL_GetTicks();
 		Clock->Reset();
@@ -58,11 +82,11 @@
 
 		srand(time(NULL));
 
-		if (SDL_Init(SDL_INIT_VIDEO) != 0){
-			std::cout << "Unable to initialize SDL: " << SDL_GetError()
-				     << std::endl;
-			return 1; //error, die
-		}
+		//if (SDL_Init(SDL_INIT_VIDEO) != 0){
+		//	std::cout << "Unable to initialize SDL: " << SDL_GetError()
+		//		     << std::endl;
+		//	return 1; //error, die
+		//}
 
 		//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -163,39 +187,69 @@
 	
 		//int score = 35;
 		//int lives = 5;	
-	
-		glColor3f(1.0f, 1.0f, 1.0f);	
-		glRasterPos2f(15.0f,17.0f);
-		font->FaceSize(15);
+		sf::String drawString;
+		drawString.SetFont(*statsFont);
+		drawString.SetSize(15);
+
+		drawString.Move(10.f,0.f);
+		
+		//strScore->SetText("Hi");
+		//strScore->SetFont(*statsFont);
+		//strScore->SetSize(50);
+
+		//strScore->SetColor(sf::Color(255,255,255,255));
+		//strScore->Move(100.f,200.f);
+
+		//App->Draw(*strScore);
+		
+		//glColor3f(1.0f, 1.0f, 1.0f);	
+		//glRasterPos2f(15.0f,17.0f);
+		//font->FaceSize(15);
 		
 		std::stringstream strScore;
 		strScore << "Score: " << score;
-		font->Render(strScore.str().c_str());
-		
+		//font->Render(strScore.str().c_str());
+		drawString.SetText(strScore.str().c_str());
 		//font->Render(strScore);
 
-		glRasterPos2f(15.0f,30.0f);
+		App->Draw(drawString);
+		//glRasterPos2f(15.0f,30.0f);
 
 		std::stringstream strLives;
 		strLives << "Lives: " << lives;
-		font->Render(strLives.str().c_str());
+		
+		drawString.SetText(strLives.str().c_str());
+
+		drawString.Move(0.f,15.9f);
+
+		App->Draw(drawString);
+		//font->Render(strLives.str().c_str());
 
 		//font->Render("Hello World");	
 	
 		if(lives<=0){
 		//if(true){
-			glColor3f(1.0f, 1.0f, 1.0f);
-			glRasterPos2f(325.0f, 300.0f);
-			txtCenter->FaceSize(20);
+			drawString.SetFont(*centerFont);
+			drawString.SetSize(25);
+			drawString.SetPosition(325.0f, 250.0f);
+			drawString.SetText("Game over");
+			App->Draw(drawString);
+		//	glColor3f(1.0f, 1.0f, 1.0f);
+		//	glRasterPos2f(325.0f, 300.0f);
+		//	txtCenter->FaceSize(20);
 	
-			txtCenter->Render("Game over");
+		//	txtCenter->Render("Game over");
 			
-			glRasterPos2f(325.0f, 330.0f);
+		//	glRasterPos2f(325.0f, 330.0f);
 			std::stringstream strScore;
 			strScore << "Score: " << score;
-			txtCenter->Render(strScore.str().c_str());
+			//txtCenter->Render(strScore.str().c_str());
+			drawString.SetPosition(325.0f,285.0f);
+			drawString.SetText(strScore.str().c_str());
+			App->Draw(drawString);
 		}
 
+		//App->Draw(drawString);
 	}	
 
 	void Game::levelEvents(){
@@ -339,28 +393,28 @@
 		while (App->GetEvent(Event)){
 			if(Event.Type == sf::Event::Closed)
 				App->Close();
-			if(Event.Type == sf::Event::KeyPressed){
+			if(Event.Type == sf::Event::KeyPressed ||
+			   Event.Type == sf::Event::KeyReleased){
+				//eventType = true if pressed, false if released
+				bool eventType = (Event.Type==sf::Event::KeyPressed); 
 				if(Event.Key.Code == sf::Key::Q){
 					App->Close();
 				}
 				if(Event.Key.Code == sf::Key::Up){
-					player.addThrust(150, deltaTime);
+					KEY_UP = eventType;
 				}
 				if(Event.Key.Code == sf::Key::Down){
-					player.addThrust(-150, deltaTime);
+					KEY_DOWN = eventType;
 				}
 				if(Event.Key.Code == sf::Key::Left){
-					player.rotateShip(-pi/3, deltaTime);
+					KEY_LEFT = eventType;
 				}
 				if(Event.Key.Code == sf::Key::Right){
-					//player.addThrust(150, deltaTime);
-					player.rotateShip(pi/3, deltaTime);
+					KEY_RIGHT = eventType;
 				}
 				if(Event.Key.Code == sf::Key::Space ||
 						  Event.Key.Code == sf::Key::Z){
-					if(player.fire()){
-						shots.push_back(Shot(&player, 35, 3500));
-					}
+					KEY_SHOOT = eventType;
 				}
 			}
 		}
@@ -385,11 +439,27 @@
 			}
 		}*/ 
 
-		/*
 
+		
+		if(KEY_UP){
+			player.addThrust(150, deltaTime);
+		}
+		if(KEY_DOWN){
+			player.addThrust(-150, deltaTime);
+		}
+		if(KEY_RIGHT){
+			player.rotateShip(pi/3, deltaTime);
+		}
+		if(KEY_LEFT){
+			player.rotateShip(-pi/3, deltaTime);
+		}
+		if(KEY_SHOOT){	
+			if(player.fire()){
+				shots.push_back(Shot(&player, 35, 3500));
+			}
+		}
 
-
-		for(int i=0; i<323; i++){  
+		/*for(int i=0; i<323; i++){  
 			if(keyDown[i]==true){
 				switch (i){
 					case 113: //q, quit
@@ -433,7 +503,6 @@
 		
 		//drawInterface();	
 
-		//drawFont();
 	
 		player.draw();
 		//App->Draw(sf::Shape::Line(10,10,710,100,15, sf::Color::Red));
@@ -476,6 +545,7 @@
 		//test->incAge(deltaTime);
 		//test->draw();
 		
+		drawFont();
 		/************
 		*Display and delay *
 		*************/

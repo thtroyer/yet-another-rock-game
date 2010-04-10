@@ -25,7 +25,7 @@
 #include <cstdlib>
 
 #include <GL/gl.h>
-#include <SDL/SDL.h>
+//#include <SDL/SDL.h>
 
 #include <new>
 #include <string>
@@ -65,7 +65,7 @@ class Rock{
 	
 	float getMaxRadius();
 
-	void move(Uint32 deltaTime);
+	void move(float deltaTime);
 
 	void recalc();
 
@@ -91,7 +91,7 @@ class Rock{
 
 	float getDy();
 
-	void rotate(Uint32 deltaTime);
+	void rotate(float deltaTime);
 };
 
 #endif

@@ -8,8 +8,13 @@
 #include "Ship.h"
 
 	Ship::Ship(){
-		deadTimer = SDL_GetTicks();
-		spawnTimer = SDL_GetTicks();
+		Clock = new sf::Clock();
+		Clock->Reset();
+		deadTimer = Clock->GetElapsedTime();
+		spawnTimer = Clock->GetElapsedTime();
+
+		//deadTimer = SDL_GetTicks();
+		//spawnTimer = SDL_GetTicks();
 		//deadTime = deadTimer;
 		active = false;
 		//safeSpawn();
@@ -21,12 +26,13 @@
 		dx = 0;
 		dy = 0;
 		speed = 0;
-		reloadTime = 200;
-		reloadTimer = SDL_GetTicks();
+		reloadTime = .200;
+		//reloadTimer = SDL_GetTicks();
+		reloadTimer = Clock->GetElapsedTime();
 		
 		warpSpawn = new WarpEffect();
 
-		deadTime = 3000;
+		deadTime = 3;
 
 	}
 
@@ -48,16 +54,16 @@
 		return angle;
 	}
 
-	void Ship::rotateShip(float rad, Uint32 deltaTime){
+	void Ship::rotateShip(float rad, float deltaTime){
 		angle = angle + (rad * deltaTime * deltaTimeConst);
 	}
 
-	void Ship::moveShip(Uint32 deltaTime){
+	void Ship::moveShip(float deltaTime){
 		x = x + (dx * deltaTime * deltaTimeConst);
 		y = y + (dy * deltaTime * deltaTimeConst);
 	}
 
-	void Ship::addThrust(int m, Uint32 deltaTime){
+	void Ship::addThrust(int m, float deltaTime){
 		if(!dead){
 			thrust = maxThrust * m * (deltaTime * deltaTimeConst);
 			dx = dx - (thrust * sin(angle)) * .8;
@@ -113,14 +119,16 @@
 	}
 
 	bool Ship::isReloaded(){
-		if (SDL_GetTicks() >= reloadTimer)
+		//if (SDL_GetTicks() >= reloadTimer)
+		if(Clock->GetElapsedTime() >= reloadTimer)
 			return true;
 		return false;
 	}
 
 	bool Ship::fire(){
-		 if(isReloaded() && !isDead()){
-			reloadTimer = SDL_GetTicks() + reloadTime;
+		if(isReloaded() && !isDead()){
+			//reloadTimer = SDL_GetTicks() + reloadTime;
+			reloadTimer = Clock->GetElapsedTime() + reloadTime;
 			return true;
 		}
 		return false;
@@ -160,7 +168,8 @@
 		y = -100;
 		dx = 0;
 		dy = 0;
-		deadTimer = SDL_GetTicks() + deadTime;
+		//deadTimer = SDL_GetTicks() + deadTime;
+		deadTimer = Clock->GetElapsedTime() + deadTime;
 
 	}
 
@@ -177,8 +186,12 @@
 			dx = 0;
 			dy = 0;
 			angle = pi;	
-			reloadTimer = SDL_GetTicks();
-			spawnTimer = SDL_GetTicks() + 250;
+			//reloadTimer = SDL_GetTicks();
+			//spawnTimer = SDL_GetTicks() + 250;
+
+			reloadTimer = Clock->GetElapsedTime();
+			spawnTimer = Clock->GetElapsedTime() + .250;
+
 	}
 	
 	void Ship::spawnShip(float spawnX, float spawnY){
@@ -188,8 +201,11 @@
 		dx = 0;
 		dy = 0;
 		angle = (randomFloat(0,2*pi));	
-		reloadTimer = SDL_GetTicks();
-		spawnTimer = SDL_GetTicks() + 250;
+		//reloadTimer = SDL_GetTicks();
+		//spawnTimer = SDL_GetTicks() + 250;
+		reloadTimer = Clock->GetElapsedTime();
+		spawnTimer = Clock->GetElapsedTime() + .250;
+
 	}
 	
 	void Ship::forceSpawn(){
@@ -200,7 +216,8 @@
 		dx = 0;
 		dy = 0;
 		angle = pi;
-		reloadTimer = SDL_GetTicks();
+		//reloadTimer = SDL_GetTicks();
+		reloadTimer = Clock->GetElapsedTime();	
 	}
 
 	void Ship::safeSpawn(std::list<Rock> rocks){
@@ -209,14 +226,16 @@
 		
 		if(!dead && !active){
 			//std::cout << "1" << std::endl;
-			if(SDL_GetTicks() > spawnTimer){
+			//if(SDL_GetTicks() > spawnTimer){
+			if(Clock->GetElapsedTime() > spawnTimer){
 				std::cout << "yay!" << std::endl;
 				active = true;
 			}
 			return;
 		}
 		
-		if (!(SDL_GetTicks() > deadTimer)){
+		//if (!(SDL_GetTicks() > deadTimer)){
+		if(!(Clock->GetElapsedTime() > deadTimer)){
 			return;
 		}
 	

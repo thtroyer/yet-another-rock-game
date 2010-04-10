@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS=-lSDL -lGL -lGLU -lpthread -lSDL -lfreetype -lftgl -lsfml-graphics -lsfml-window -lsfml-system
-LDFLAGS=-g -I/usr/include/SDL
+CFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS=-g
 SOURCES=MyLine.cpp MyLine.h MyPoint.cpp MyPoint.h Rock.h Rock.cpp Ship.cpp Ship.h Shot.cpp Shot.h WarpEffect.h WarpEffect.cpp Game.h Game.cpp random.h 
 OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o WarpEffect.o Game.o random.o 
 
