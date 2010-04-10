@@ -15,15 +15,15 @@
 		/*
 		** Initialize Game variables
 		*/	
-		keyDown = new bool[323];
+		/*keyDown = new bool[323];
 		for(int i=0; i<323; i++)
 			keyDown[i] = false;
-		line = new MyLine[2];
+		line = new MyLine[2];*/
 
 	}
 
 	Game::~Game(){
-		delete [] keyDown;
+		//delete [] keyDown;
 		delete [] line;
 	}
 	
@@ -34,10 +34,26 @@
 
 	bool Game::init(){
 
+		App = new sf::RenderWindow(sf::VideoMode(800,600,24), "yarg");
+		Clock = new sf::Clock();
+
+		glClearDepth(1.f);
+		glClearColor(0.f,0.f,0.f,0.f);
+
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		//gluPerspective(90.f,1.f,1.f,500.f);
+		glOrtho(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
+		//Event = new sf::Event();
+		
 		test = new WarpEffect(50,50);
 		
 		//lastFrameTime = SDL_GetTicks();
-		currFrameTime = SDL_GetTicks();
+		//currFrameTime = SDL_GetTicks();
+		Clock->Reset();
 		deltaTime = 0;
 
 		srand(time(NULL));
@@ -48,11 +64,11 @@
 			return 1; //error, die
 		}
 
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-		screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPENGL);  
+		//screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPENGL);  
 	
-		glDisable(GL_DEPTH_TEST);
+	/*	glDisable(GL_DEPTH_TEST);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glViewport(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
@@ -69,13 +85,17 @@
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		SDL_GL_SwapBuffers();
-	
+		SDL_GL_SwapBuffers();*/
 
-		font = new FTGLBitmapFont("cour.ttf");
-		txtCenter = new FTGLPixmapFont("cour.ttf");
+
+		//font = new FTGLBitmapFont("cour.ttf");
+		//txtCenter = new FTGLPixmapFont("cour.ttf");
 	
-		time (&time1);
+		///time (&time1);
+
+
+
+
 		std::cout << std::endl;
 
 		
@@ -90,11 +110,17 @@
 
 	void Game::loop(){
 
-		while(gameRunning){
+		//while(gameRunning){
+		while(App->IsOpened()){
 
-			lastFrameTime = currFrameTime;
-			currFrameTime = SDL_GetTicks();
-			deltaTime = currFrameTime - lastFrameTime;
+			//lastFrameTime = currFrameTime;
+			//currFrameTime = SDL_GetTicks();
+			//deltaTime = currFrameTime - lastFrameTime;
+			
+			//deltaTime originally designed for miliseconds
+			//todo: change all deltaTime instances to floats 
+			deltaTime = Clock->GetElapsedTime() * 1000;
+			Clock->Reset();
 			
 			if(deltaTime > 5000){ //this shouldn't happen
 				deltaTime = 1;
@@ -102,7 +128,7 @@
 			}
 	
 			levelEvents();
-				
+					
 			frames++;	
 			/*if(frames>1000){
 				time(&time2);
@@ -112,7 +138,7 @@
 				std::cout << "deltaTime: " << deltaTime << std::endl;
 			}*/
 	
-					collisionEvents();
+			collisionEvents();
 			keyEvents();
 			
 
@@ -307,7 +333,39 @@
 
 		
 	void Game::keyEvents(){
-		while(SDL_PollEvent(&event)){
+		sf::Event Event;
+		const sf::Input& Input = App->GetInput();
+		//multiple keypress problem.
+		while (App->GetEvent(Event)){
+			if(Event.Type == sf::Event::Closed)
+				App->Close();
+			if(Event.Type == sf::Event::KeyPressed){
+				if(Event.Key.Code == sf::Key::Q){
+					App->Close();
+				}
+				if(Event.Key.Code == sf::Key::Up){
+					player.addThrust(150, deltaTime);
+				}
+				if(Event.Key.Code == sf::Key::Down){
+					player.addThrust(-150, deltaTime);
+				}
+				if(Event.Key.Code == sf::Key::Left){
+					player.rotateShip(-pi/3, deltaTime);
+				}
+				if(Event.Key.Code == sf::Key::Right){
+					//player.addThrust(150, deltaTime);
+					player.rotateShip(pi/3, deltaTime);
+				}
+				if(Event.Key.Code == sf::Key::Space ||
+						  Event.Key.Code == sf::Key::Z){
+					if(player.fire()){
+						shots.push_back(Shot(&player, 35, 3500));
+					}
+				}
+			}
+		}
+
+		/*while(SDL_PollEvent(&event)){
 			if(event.type == SDL_QUIT)
 			{
 				gameRunning = false;
@@ -325,7 +383,9 @@
 					break;
 				
 			}
-		}
+		}*/ 
+
+		/*
 
 
 
@@ -361,24 +421,29 @@
 						break;
 				}	
 			}
-		}
+		}*/
 	}
 	
 
 	void Game::render(){
-		glClear(GL_COLOR_BUFFER_BIT);
+		App->SetActive();
+	//	glClear(GL_COLOR_BUFFER_BIT);
+//		App->Clear();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		//drawInterface();	
 
-		drawFont();
+		//drawFont();
 	
 		player.draw();
+		//App->Draw(sf::Shape::Line(10,10,710,100,15, sf::Color::Red));
 	
 		/************
 		*Draw shots *
 		*************/
-		glColor3f(.9, .9, .9);
+		//glColor3f(.9, .9, .9);
 
+		glColor3f(.9, .9, .9);
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			glBegin(GL_POLYGON);				
 				glVertex2f(it->getX() - 1, it->getY() + 1);
@@ -394,6 +459,7 @@
 		*Draw rock *
 		*************/
 
+		glColor3f(.9, .9, .9);
 		for (std::list<Rock>::iterator it = rocks.begin(); it != rocks.end(); it++){
 			glBegin(GL_POLYGON);
 			for (int i = 0; i < it->getNumPoints(); i++){
@@ -413,8 +479,9 @@
 		/************
 		*Display and delay *
 		*************/
-		SDL_GL_SwapBuffers();
+		App->Display();
 		
+	//	SDL_GL_SwapBuffers();
 	}
 
 

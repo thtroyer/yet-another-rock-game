@@ -22,6 +22,11 @@
 #include <GL/gl.h>
 #include <FTGL/ftgl.h>
 
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+
+
 #include <SDL/SDL.h>
 #include <new>
 #include <string>
@@ -54,14 +59,18 @@ class Game{
 	*/
 
 	//SDL stuff
-	SDL_Surface * screen; 
-	SDL_Event event;
+	//SDL_Surface * screen; 
+	sf::RenderWindow *App;
+	sf::Clock *Clock;
+	//sf::Event *Event;
+	//SDL_Event event;
+
 
 	FTGLBitmapFont* font;
 	FTGLPixmapFont* txtCenter;
 
 	//Keyboard bool array
-	bool * keyDown;
+	//bool * keyDown;
 
 	//Player stuff
 	MyLine* line;
@@ -72,11 +81,11 @@ class Game{
 	
 	int rate;
 	int frames;
-	time_t time1;
-	time_t time2;
+	//time_t time1;
+	//time_t time2;
 
-	Uint32 lastFrameTime;
-	Uint32 currFrameTime;
+	//Uint32 lastFrameTime;
+	//Uint32 currFrameTime;
 	Uint32 deltaTime;
 
  	WarpEffect* test;
