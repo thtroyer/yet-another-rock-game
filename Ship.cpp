@@ -228,7 +228,6 @@
 			//std::cout << "1" << std::endl;
 			//if(SDL_GetTicks() > spawnTimer){
 			if(Clock->GetElapsedTime() > spawnTimer){
-				std::cout << "yay!" << std::endl;
 				active = true;
 			}
 			return;

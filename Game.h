@@ -19,8 +19,8 @@
 #include <iostream>
 #include <cstdlib>
 
-#include <GL/gl.h>
-#include <FTGL/ftgl.h>
+//#include <GL/gl.h>
+//#include <FTGL/ftgl.h>
 
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -70,8 +70,8 @@ class Game{
 	sf::String* strScore;
 	sf::String* strMessage;
 
-	FTGLBitmapFont* font;
-	FTGLPixmapFont* txtCenter;
+	//FTGLBitmapFont* font;
+	//FTGLPixmapFont* txtCenter;
 
 	//Keyboard bool array
 	//bool * keyDown;
