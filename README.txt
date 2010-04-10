@@ -15,8 +15,7 @@ q -- Quit
 Changelog:
 0.2 SFML replaced SDL
     Score/lives attributes added
-    Drawing to screen enabled
-	 Added effect when ship spawns
+    Added effect when ship spawns
 
 0.1 Initial Release
 
