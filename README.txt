@@ -1,5 +1,4 @@
-
-Yarg 0.2
+Yarg 0.2.1
 
 This is the second release of yarg.  On the surface, the main differences are that the game now keeps track of scoring and the number of lives.  Underneath, SDL was replaced with SFML to better accomidate cross-platform development.
 
@@ -13,6 +12,10 @@ Spacebar,z -- shoot
 q -- Quit
 
 Changelog:
+0.2.1
+    OpenGL color bug fix
+	 Utilized frame rate limiter to prevent math/physics errors on faster machines
+
 0.2 SFML replaced SDL
     Score/lives attributes added
     Added effect when ship spawns
