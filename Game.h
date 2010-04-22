@@ -58,20 +58,13 @@ class Game{
 	** Game variables
 	*/
 
-	//SDL stuff
-	//SDL_Surface * screen; 
 	sf::RenderWindow* App;
 	sf::Clock* Clock;
-	//sf::Event *Event;
-	//SDL_Event event;
 
 	sf::Font* statsFont;
 	sf::Font* centerFont;
 	sf::String* strScore;
 	sf::String* strMessage;
-
-	//FTGLBitmapFont* font;
-	//FTGLPixmapFont* txtCenter;
 
 	//Keyboard bool array
 	//bool * keyDown;
@@ -86,11 +79,6 @@ class Game{
 	
 	int rate;
 	int frames;
-	//time_t time1;
-	//time_t time2;
-
-	//Uint32 lastFrameTime;
-	//Uint32 currFrameTime;
 	float deltaTime;
 
  	WarpEffect* test;

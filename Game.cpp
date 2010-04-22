@@ -12,25 +12,9 @@
 	
 	Game::Game(){
 		
-		/*
-		** Initialize Game variables
-		*/	
-		/*keyDown = new bool[323];
-		for(int i=0; i<323; i++)
-			keyDown[i] = false;
-		line = new MyLine[2];*/
-		KEY_UP = false;
-		KEY_DOWN = false;
-		KEY_RIGHT = false;
-		KEY_LEFT = false;
-		KEY_SHOOT = false;
 	}
 
 	Game::~Game(){
-		//delete [] keyDown;
-		//delete [] line;
-		//delete App;
-		//delete Clock;
 
 	}
 	
@@ -41,8 +25,16 @@
 
 	bool Game::init(){
 
+		KEY_UP = false;
+		KEY_DOWN = false;
+		KEY_RIGHT = false;
+		KEY_LEFT = false;
+		KEY_SHOOT = false;
+
 		App = new sf::RenderWindow(sf::VideoMode(800,600,24), "yarg");
 		Clock = new sf::Clock();
+
+		App->SetFramerateLimit(80);
 
 		//Correct for this later
 		App->PreserveOpenGLStates(true);
@@ -55,13 +47,13 @@
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		//gluPerspective(90.f,1.f,1.f,500.f);
+		
 		glOrtho(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
-		//Event = new sf::Event();
+		
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		test = new WarpEffect(50,50);
+		//test = new WarpEffect(50,50);
 	
 		statsFont = new sf::Font();
 		centerFont = new sf::Font();
@@ -75,48 +67,10 @@
 		strScore->SetFont(*statsFont);
 		strMessage->SetFont(*centerFont);
 
-		//lastFrameTime = SDL_GetTicks();
-		//currFrameTime = SDL_GetTicks();
 		Clock->Reset();
 		deltaTime = 0;
 
 		srand(time(NULL));
-
-		//if (SDL_Init(SDL_INIT_VIDEO) != 0){
-		//	std::cout << "Unable to initialize SDL: " << SDL_GetError()
-		//		     << std::endl;
-		//	return 1; //error, die
-		//}
-
-		//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-		//screen = SDL_SetVideoMode( WINDOW_WIDTH, WINDOW_HEIGHT, 16, SDL_OPENGL);  
-	
-	/*	glDisable(GL_DEPTH_TEST);
-
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glViewport(0,0,WINDOW_WIDTH,WINDOW_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-
-		glOrtho(0.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, -1.0f, 1.0f);
-
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		
-		glEnable (GL_BLEND);
-		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		SDL_GL_SwapBuffers();*/
-
-
-		//font = new FTGLBitmapFont("cour.ttf");
-		//txtCenter = new FTGLPixmapFont("cour.ttf");
-	
-		///time (&time1);
-
 
 
 
@@ -134,15 +88,10 @@
 
 	void Game::loop(){
 
-		//while(gameRunning){
 		while(App->IsOpened()){
 
-			//lastFrameTime = currFrameTime;
-			//currFrameTime = SDL_GetTicks();
-			//deltaTime = currFrameTime - lastFrameTime;
 			
 			//deltaTime originally designed for miliseconds
-			//todo: change all deltaTime instances to floats 
 			deltaTime = Clock->GetElapsedTime() * 1000;
 			Clock->Reset();
 			
@@ -154,13 +103,6 @@
 			levelEvents();
 					
 			frames++;	
-			/*if(frames>1000){
-				time(&time2);
-				frames=0;
-				std::cout << 1000.0/(difftime (time2, time1)) << "fps" << std::endl;
-				time (&time1);
-				std::cout << "deltaTime: " << deltaTime << std::endl;
-			}*/
 	
 			collisionEvents();
 			keyEvents();
@@ -168,7 +110,6 @@
 
 			render();
 		}
-		//delete font;
 	}
 
 	void Game::newGame(){
@@ -185,35 +126,18 @@
 
 	void Game::drawFont(){
 	
-		//int score = 35;
-		//int lives = 5;	
 		sf::String drawString;
 		drawString.SetFont(*statsFont);
 		drawString.SetSize(15);
 
 		drawString.Move(10.f,0.f);
 		
-		//strScore->SetText("Hi");
-		//strScore->SetFont(*statsFont);
-		//strScore->SetSize(50);
-
-		//strScore->SetColor(sf::Color(255,255,255,255));
-		//strScore->Move(100.f,200.f);
-
-		//App->Draw(*strScore);
-		
-		//glColor3f(1.0f, 1.0f, 1.0f);	
-		//glRasterPos2f(15.0f,17.0f);
-		//font->FaceSize(15);
 		
 		std::stringstream strScore;
 		strScore << "Score: " << score;
-		//font->Render(strScore.str().c_str());
 		drawString.SetText(strScore.str().c_str());
-		//font->Render(strScore);
 
 		App->Draw(drawString);
-		//glRasterPos2f(15.0f,30.0f);
 
 		std::stringstream strLives;
 		strLives << "Lives: " << lives;
@@ -223,33 +147,20 @@
 		drawString.Move(0.f,15.9f);
 
 		App->Draw(drawString);
-		//font->Render(strLives.str().c_str());
-
-		//font->Render("Hello World");	
 	
 		if(lives<=0){
-		//if(true){
 			drawString.SetFont(*centerFont);
 			drawString.SetSize(25);
 			drawString.SetPosition(325.0f, 250.0f);
 			drawString.SetText("Game over");
 			App->Draw(drawString);
-		//	glColor3f(1.0f, 1.0f, 1.0f);
-		//	glRasterPos2f(325.0f, 300.0f);
-		//	txtCenter->FaceSize(20);
-	
-		//	txtCenter->Render("Game over");
-			
-		//	glRasterPos2f(325.0f, 330.0f);
 			std::stringstream strScore;
 			strScore << "Score: " << score;
-			//txtCenter->Render(strScore.str().c_str());
 			drawString.SetPosition(325.0f,285.0f);
 			drawString.SetText(strScore.str().c_str());
 			App->Draw(drawString);
 		}
 
-		//App->Draw(drawString);
 	}	
 
 	void Game::levelEvents(){
@@ -272,9 +183,6 @@
 
 	void Game::moveShots(){
 
-	//	if(shots.size()==0){
-	//		shots.push_back(Shot(true));
-	//	}
 
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			if(it->checkAge()){
@@ -459,60 +367,22 @@
 			}
 		}
 
-		/*for(int i=0; i<323; i++){  
-			if(keyDown[i]==true){
-				switch (i){
-					case 113: //q, quit
-						gameRunning = !gameRunning;
-						break;
-					case 273: //up
-						player.addThrust(150, deltaTime);
-						line[0].setY(0,((int)line[0].getY(0))-1);	
-						break;
-					case 274: //down
-						player.addThrust(-150, deltaTime);
-						line[0].setY(0,((int)line[0].getY(0))+1);	
-						break;
-					case 275: //right
-						//player.rotateShip(pi/25, deltaTime);
-						player.rotateShip(pi/3, deltaTime);
-						line[0].setX(0,((int)line[0].getX(0))+1);	
-						break;
-					case 276: //left
-						//player.rotateShip(-pi/25, deltaTime);
-						player.rotateShip(-pi/3, deltaTime);
-						line[0].setX(0,((int)line[0].getX(0))-1);	
-						break;
-					case 32: //Spacebar
-					case 122: //z, shoot
-						if(player.fire()){
-							shots.push_back(Shot(&player, 35, 3500));
-						}
-						break;
-				}	
-			}
-		}*/
 	}
 	
 
 	void Game::render(){
 		App->SetActive();
-	//	glClear(GL_COLOR_BUFFER_BIT);
-//		App->Clear();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		//drawInterface();	
-
 	
 		player.draw();
-		//App->Draw(sf::Shape::Line(10,10,710,100,15, sf::Color::Red));
 	
 		/************
 		*Draw shots *
 		*************/
-		//glColor3f(.9, .9, .9);
 
-		glColor3f(.9, .9, .9);
+		glColor4f(0.9, 0.9, 0.9, 1.0);
+		//glColor3f(.9, .9, .9);
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
 			glBegin(GL_POLYGON);				
 				glVertex2f(it->getX() - 1, it->getY() + 1);
@@ -528,7 +398,9 @@
 		*Draw rock *
 		*************/
 
-		glColor3f(.9, .9, .9);
+
+		glColor4f(0.9, 0.9, 0.9, 1.0);
+		//glColor3f(.9, .9, .9);
 		for (std::list<Rock>::iterator it = rocks.begin(); it != rocks.end(); it++){
 			glBegin(GL_POLYGON);
 			for (int i = 0; i < it->getNumPoints(); i++){
@@ -541,9 +413,6 @@
 		*Draw effects*
 		*************/
 		
-		
-		//test->incAge(deltaTime);
-		//test->draw();
 		
 		drawFont();
 		/************

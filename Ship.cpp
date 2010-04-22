@@ -286,7 +286,9 @@
 			return;
 		}
 		
-		glColor3f(.9, .9, .9);
+		//glColor3f(.9, .9, .9);
+		
+		glColor4f(0.9, 0.9, 0.9, 1.0);
 		
 		glBegin(GL_LINES);
 			glVertex2f(getCoords(2,0), getCoords(2,1));
@@ -299,7 +301,8 @@
 			glVertex2f(getCoords(1,0), getCoords(1,1));
 		glEnd();
 
-		glColor3f(.8, .1, .1);
+		glColor4f(0.8, 0.1, 0.1, 1.0);
+		//glColor3f(.8, .1, .1);
 		glBegin(GL_LINES);
 			glVertex2f(getCoords(1,0), getCoords(1,1));
 			glVertex2f(getCoords(2,0), getCoords(2,1));
