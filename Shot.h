@@ -1,7 +1,7 @@
 
 /*
 ** YARG Shot.h
-**	Copyright Tom Troyer 2010 (tom.troyer@gmail.com)
+** Copyright Tom Troyer 2010 (tom.troyer@gmail.com)
 ** Released under GPLv3
 */
 
@@ -35,6 +35,9 @@ class Shot{
 	int age;
 	int maxAge;
 	bool blank;
+	//int size;
+	
+	int type; //0 = bullet; 1 = bomb
 
 	float x;
 	float y;
@@ -49,6 +52,7 @@ class Shot{
 	Shot(float m, int n);
 
 	Shot(Ship* owner, float m, int mAge);
+	Shot(Ship* owner, float m, int mAge, int mType);
 	
 	Shot();
 	
@@ -73,6 +77,12 @@ class Shot{
 	void wrap();
 	
 	bool isBlank();
+	
+	int getType();
+	void setType(int m);
+	
+	int getSize();
+	void setSize(int m);
 
 };
 

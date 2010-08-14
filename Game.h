@@ -45,6 +45,8 @@
 #include "random.h"
 #include "Ship.h"
 #include "Shot.h"
+#include "Bullet.h"
+#include "Bomb.h"
 #include "Rock.h"
 #include "Level.h"
 #include "WarpEffect.h"
@@ -68,7 +70,7 @@ class Game{
 
 	//Keyboard bool array
 	//bool * keyDown;
-	bool KEY_UP, KEY_DOWN, KEY_RIGHT, KEY_LEFT, KEY_SHOOT;
+	bool KEY_UP, KEY_DOWN, KEY_RIGHT, KEY_LEFT, KEY_SHOOT, KEY_BOMB;
 
 	//Player stuff
 	MyLine* line;

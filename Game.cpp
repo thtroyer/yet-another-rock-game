@@ -30,6 +30,7 @@
 		KEY_RIGHT = false;
 		KEY_LEFT = false;
 		KEY_SHOOT = false;
+		KEY_BOMB = false;
 
 		App = new sf::RenderWindow(sf::VideoMode(800,600,24), "yarg");
 		Clock = new sf::Clock();
@@ -324,6 +325,9 @@
 						  Event.Key.Code == sf::Key::Z){
 					KEY_SHOOT = eventType;
 				}
+				if(Event.Key.Code == sf::Key::Tab){
+					KEY_BOMB = eventType;
+				}
 			}
 		}
 
@@ -363,9 +367,15 @@
 		}
 		if(KEY_SHOOT){	
 			if(player.fire()){
-				shots.push_back(Shot(&player, 35, 3500));
+				shots.push_back(Bullet(&player, 35, 3500));
 			}
 		}
+		if(KEY_BOMB){	
+			if(player.fire()){
+				shots.push_back(Bomb(&player, 35, 3500));
+			}
+		}
+		
 
 	}
 	
@@ -381,14 +391,25 @@
 		*Draw shots *
 		*************/
 
-		glColor4f(0.9, 0.9, 0.9, 1.0);
+		
 		//glColor3f(.9, .9, .9);
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
-			glBegin(GL_POLYGON);				
-				glVertex2f(it->getX() - 1, it->getY() + 1);
-				glVertex2f(it->getX() + 1, it->getY() + 1);
-				glVertex2f(it->getX() + 1, it->getY() - 1);
-				glVertex2f(it->getX() - 1, it->getY() - 1);
+			switch(it->getType()){
+				case 0: //bullet
+					glColor4f(0.9, 0.9, 0.9, 1.0);
+					break;
+				case 1: //bomb
+					glColor4f(0.0, 0.9, 0.0, 1.0);
+					break;
+			}
+			int rockX = it->getX();
+			int rockY = it->getY();
+			int rockSize = it->getSize();
+			glBegin(GL_POLYGON);		
+				glVertex2f(rockX - rockSize, rockY + rockSize);
+				glVertex2f(rockX + rockSize, rockY + rockSize);
+				glVertex2f(rockX + rockSize, rockY - rockSize);
+				glVertex2f(rockX - rockSize, rockY - rockSize);
 			glEnd();
 		}
 

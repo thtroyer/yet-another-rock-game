@@ -1,7 +1,7 @@
 
 /*
 ** YARG Shot.h
-**	Copyright Tom Troyer 2010 (tom.troyer@gmail.com)
+** Copyright Tom Troyer 2010 (tom.troyer@gmail.com)
 ** Released under GPLv3
 */
 
@@ -29,6 +29,20 @@
 		maxAge = mAge;
 		speed = m;
 
+		dy = owner->getDy() + (speed * cos(owner->getAngle()));
+		dx = -1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
+
+		x = owner->point[0].getX();
+		y = owner->point[0].getY();
+		blank = false;
+	}
+	
+	Shot::Shot(Ship* owner, float m, int mAge, int mType){
+		age = 0;
+		maxAge = mAge;
+		speed = m;
+		type = mType;
+		
 		dy = owner->getDy() + (speed * cos(owner->getAngle()));
 		dx = -1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
 
@@ -104,6 +118,22 @@
 
 	bool Shot::isBlank(){
 		return blank;
+	}
+	
+	void Shot::setType(int m){
+		type = m;
+	}
+	
+	int Shot::getType(){
+		return type;
+	}
+	
+	void Shot::setSize(int m){
+		size = m;
+	}
+	
+	int Shot::getSize(){
+		return size;
 	}
 
 
