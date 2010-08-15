@@ -7,10 +7,19 @@
 
 #include "Bullet.h"
 
+	Bullet::Bullet() : Shot(){
+		
+		setType(0);
+		setSize(1);
+		setReloadTime(.200);
+		
+	}
+
 	Bullet::Bullet(Ship* owner, float m, int mAge) : Shot(owner, m, mAge){
 		
 		setType(0);
 		setSize(1);
+		setReloadTime(.200);
 		
 	}
 	

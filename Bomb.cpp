@@ -5,13 +5,23 @@
 ** Released under GPLv3
 */
 
+
 #include "Bomb.h"
+
+	Bomb::Bomb() : Shot(){
+		
+		setType(1);
+		setSize(3);
+		setReloadTime(.500);
+		
+	}
 
 	Bomb::Bomb(Ship* owner, float m, int mAge) : 
 		Shot(owner, m, mAge){
 		
 		setType(1);
 		setSize(3);
+		setReloadTime(.500);
 		
 	}
 	
@@ -25,5 +35,4 @@
 		
 		
 	}
-
 

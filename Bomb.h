@@ -33,6 +33,7 @@ class Bomb : public Shot{
 	//private:
 
 	public:
+	Bomb();
 	Bomb(Ship* owner, float m, int mAge);
 	
 	void draw();

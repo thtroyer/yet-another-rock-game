@@ -140,4 +140,12 @@
 		return size;
 	}
 
+	float Shot::getReloadTime(){
+		return reloadTime;
+	}
+
+	void Shot::setReloadTime(float m){
+		reloadTime = m;
+	}
+
 

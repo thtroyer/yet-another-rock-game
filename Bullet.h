@@ -34,6 +34,7 @@ class Bullet : public Shot{
 
 	public:
 
+	Bullet();
 	Bullet(Ship* owner, float m, int mAge);
 	
 	void draw();

@@ -30,7 +30,10 @@
 
 #include "consts.h"
 
+class Ship;
+
 class Shot{
+	
 	protected:
 	float dx;
 	float dy;
@@ -40,6 +43,8 @@ class Shot{
 	int maxAge;
 	bool blank;
 	//int size;
+	float reloadTime;
+	
 	
 	int type; //0 = bullet; 1 = bomb
 
@@ -89,6 +94,9 @@ class Shot{
 	
 	int getSize();
 	void setSize(int m);
+	
+	float getReloadTime();
+	void setReloadTime(float m);
 
 };
 

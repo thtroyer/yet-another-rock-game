@@ -29,10 +29,13 @@
 #include <list>
 
 #include "Rock.h"
+#include "Shot.h"
 #include "MyLine.h"
 #include "WarpEffect.h"
 
 #include "consts.h"
+
+class Shot;
 
 class Ship{
 	float x;
@@ -56,7 +59,7 @@ class Ship{
 	
 	bool reload;
 	//Uint32 reloadTimer;
-	float reloadTimer;
+	float* reloadTimer;
 	float reloadTime;
 
 	//Uint32 deadTimer;
@@ -111,8 +114,12 @@ class Ship{
 	float getCoords(int lineSeg, int pair);
 
 	bool isReloaded();
+	
+	bool isReloaded(Shot* shot);
 
 	bool fire();
+	
+	bool fire(Shot* shot);
 
 	void wrap();
 

@@ -183,7 +183,6 @@
 	}
 
 	void Game::moveShots(){
-
 		for (std::list<Shot*>::iterator it = shots.begin(); it != shots.end(); it++){
 			if((*it)->checkAge()){
 					(*it)->move(deltaTime);
@@ -255,7 +254,7 @@
 												      ((*itR)->getDx() + (xSpeed * cos(angle))),
 												      ((*itR)->getDy() + (ySpeed * sin(angle))),	
 												      (rockSize - 10),
-												      (randomInt(6,12)),
+												      (randomInt(6,9)),
 							                     ((*itR)->getdAngle() + randomFloat(-2,2)*pi/50)));
 						}
 					}		
@@ -367,13 +366,14 @@
 		if(KEY_LEFT){
 			player.rotateShip(-pi/3, deltaTime);
 		}
-		if(KEY_SHOOT){	
-			if(player.fire()){
+		if(KEY_SHOOT){
+		//fix Bullet/Bomb passing
+			if(player.fire(new Bullet())){
 				shots.push_back(new Bullet(&player, 35.f, 3500));
 			}
 		}
 		if(KEY_BOMB){	
-			if(player.fire()){
+			if(player.fire(new Bomb())){
 				shots.push_back(new Bomb(&player, 35.f, 3500));
 			}
 		}
@@ -403,17 +403,9 @@
 		*Draw rock *
 		*************/
 		
-		//implement rock.draw()
 
-		glColor4f(0.9, 0.9, 0.9, 1.0);
-		//glColor3f(.9, .9, .9);
 		for (std::list<Rock*>::iterator it = rocks.begin(); it != rocks.end(); it++){
 			(*it)->draw();
-			/*glBegin(GL_POLYGON);
-			for (int i = 0; i < (*it)->getNumPoints(); i++){
-				glVertex2f(((*it)->getX() + (*it)->point[i].getX()), ((*it)->getY() + (*it)->point[i].getY()));
-			}
-			glEnd();*/
 		}
 		
 		/************

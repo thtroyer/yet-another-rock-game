@@ -26,9 +26,14 @@
 		dx = 0;
 		dy = 0;
 		speed = 0;
+		
+		
 		reloadTime = .200;
 		//reloadTimer = SDL_GetTicks();
-		reloadTimer = Clock->GetElapsedTime();
+		reloadTimer = new float[10];
+		for (int i = 0; i<10; i++){
+			reloadTimer[i] = Clock->GetElapsedTime();
+		}
 		
 		warpSpawn = new WarpEffect();
 
@@ -118,22 +123,36 @@
 		return -1;
 	}
 
-	bool Ship::isReloaded(){
+	bool Ship::isReloaded(){ //deprecated
 		//if (SDL_GetTicks() >= reloadTimer)
-		if(Clock->GetElapsedTime() >= reloadTimer)
+		if(Clock->GetElapsedTime() >= reloadTimer[0])
+			return true;
+		return false;
+	}
+	
+	bool Ship::isReloaded(Shot* shot){
+		if(Clock->GetElapsedTime() >= reloadTimer[shot->getType()])
 			return true;
 		return false;
 	}
 
-	bool Ship::fire(){
+	bool Ship::fire(){ //deprecated
 		if(isReloaded() && !isDead()){
 			//reloadTimer = SDL_GetTicks() + reloadTime;
-			reloadTimer = Clock->GetElapsedTime() + reloadTime;
+			//reloadTimer[0] = Clock->GetElapsedTime() + reloadTime[0];
 			return true;
 		}
 		return false;
 	}
 
+	bool Ship::fire(Shot* shot){
+		if(isReloaded(shot) && !isDead()){
+			reloadTimer[shot->getType()] = Clock->GetElapsedTime() + shot->getReloadTime();
+			return true;
+		}
+		return false;
+	
+	}
 
 	void Ship::wrap(){
 		if(!dead){
@@ -189,7 +208,7 @@
 			//reloadTimer = SDL_GetTicks();
 			//spawnTimer = SDL_GetTicks() + 250;
 
-			reloadTimer = Clock->GetElapsedTime();
+			//reloadTimer = Clock->GetElapsedTime();
 			spawnTimer = Clock->GetElapsedTime() + .250;
 
 	}
@@ -203,7 +222,7 @@
 		angle = (randomFloat(0,2*pi));	
 		//reloadTimer = SDL_GetTicks();
 		//spawnTimer = SDL_GetTicks() + 250;
-		reloadTimer = Clock->GetElapsedTime();
+		//reloadTimer = Clock->GetElapsedTime();
 		spawnTimer = Clock->GetElapsedTime() + .250;
 
 	}
@@ -217,7 +236,7 @@
 		dy = 0;
 		angle = pi;
 		//reloadTimer = SDL_GetTicks();
-		reloadTimer = Clock->GetElapsedTime();	
+		//reloadTimer = Clock->GetElapsedTime();	
 	}
 
 	void Ship::safeSpawn(std::list<Rock*> rocks){

@@ -6,6 +6,7 @@
 */
 
 #include "Rock.h"
+#include "random.h"
 	
 	Rock::Rock(){
 		x = 200;
@@ -15,8 +16,10 @@
 		point = new MyPoint[5];
 		for(int i=0; i<5; i++){
 			std::cout << "random = " << (rand() % 10);
-			point[i].setX(x + ((size) * cos(i * 2 * pi / 5)) + ((size) * rand() % 10));
-			point[i].setY(y + ((size) * sin(i * 2 * pi / 5)) + ((size) * rand() % 10));
+			//point[i].setX(x + ((size) * cos(i * 2 * pi / 5)) + ((size) * rand() % 10));
+			//point[i].setY(y + ((size) * sin(i * 2 * pi / 5)) + ((size) * rand() % 10));
+			point[i].setX(x + ((size) * cos(i * 2 * pi / 5)) + ((size) * randomFloat(1,1)));
+			point[i].setY(y + ((size) * sin(i * 2 * pi / 5)) + ((size) * randomFloat(1,1)));
 
 			std::cout << "point " << i << " x = " << point[i].getX() << std::endl;
 		}
@@ -39,8 +42,10 @@
 
 		for(int i=0; i<numPoints; i++){ //loop through points
 			//set coords
-			point[i].setX(randomInt(-8,8) + size * (cos(i * 2 * pi / numPoints)));
-			point[i].setY(randomInt(-8,8) + size * (sin(i * 2 * pi / numPoints)));
+			//point[i].setX(randomFloat(.7,.701) * size * (cos(i * 2 * pi / numPoints)));
+			//point[i].setY(randomFloat(.7,.701) * size * (sin(i * 2 * pi / numPoints)));
+			point[i].setX(randomInt(850,1100)/1000. * size * (cos(i * 2 * pi / numPoints)));
+			point[i].setY(randomInt(850,1100)/1000. * size * (sin(i * 2 * pi / numPoints)));
 			float isMax = sqrt(pow(point[i].getX(),2) + pow(point[i].getY(),2));
 			if(isMax > maxRadius)
 				maxRadius = isMax;
@@ -60,6 +65,7 @@
 	}
 	
 	void Rock::draw(){
+		glColor4f(0.9, 0.9, 0.9, 1.0);
 		glBegin(GL_POLYGON);
 			for (int i = 0; i < numPoints; i++){
 				glVertex2f((x + point[i].getX()), y + point[i].getY());
