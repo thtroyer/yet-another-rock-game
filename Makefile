@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
-LDFLAGS=-g
+LDFLAGS=-g -Wall
 SOURCES=MyLine.cpp MyLine.h MyPoint.cpp MyPoint.h Rock.h Rock.cpp Ship.cpp Ship.h Shot.cpp Bullet.cpp Bomb.cpp Shot.h Bullet.h Bomb.h WarpEffect.h WarpEffect.cpp Game.h Game.cpp random.h 
 OBJECTS= Level.o MyLine.o MyPoint.o Rock.o Ship.o Shot.o WarpEffect.o Game.o random.o Bullet.o Bomb.o
 

@@ -67,6 +67,10 @@
 
 	}
 
+	void Shot::draw(){
+		
+	}
+
 	float Shot::getX(){
 		return x;
 	}

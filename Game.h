@@ -76,7 +76,7 @@ class Game{
 	MyLine* line;
 	Ship player;
 
-	std::list<Shot> shots;
+	std::list<Shot*> shots; //check for memory leak
 	std::list<Rock> rocks;
 	
 	int rate;

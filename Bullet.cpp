@@ -13,5 +13,15 @@
 		setSize(1);
 		
 	}
+	
+	void Bullet::draw(){
+		glColor4f(0.9, 0.9, 0.9, 1.0);
+		glBegin(GL_POLYGON);		
+			glVertex2f(x - size, y + size);
+			glVertex2f(x + size, y + size);
+			glVertex2f(x + size, y - size);
+			glVertex2f(x - size, y - size);
+		glEnd();
+	}
 
 

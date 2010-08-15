@@ -17,6 +17,9 @@
 
 #include <GL/gl.h>
 
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+
 #include <new>
 #include <string>
 #include <math.h>
@@ -28,6 +31,7 @@
 #include "consts.h"
 
 class Shot{
+	protected:
 	float dx;
 	float dy;
 	int size;
@@ -55,6 +59,8 @@ class Shot{
 	Shot(Ship* owner, float m, int mAge, int mType);
 	
 	Shot();
+	
+	virtual void draw();
 	
 	void fire(Ship* owner);
 
