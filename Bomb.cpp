@@ -11,7 +11,7 @@
 		Shot(owner, m, mAge){
 		
 		setType(1);
-		setSize(5);
+		setSize(3);
 		
 	}
 

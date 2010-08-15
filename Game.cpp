@@ -390,27 +390,43 @@
 		/************
 		*Draw shots *
 		*************/
-
+		
+		//TODO: Implement draw function within Shot classes
 		
 		//glColor3f(.9, .9, .9);
 		for (std::list<Shot>::iterator it = shots.begin(); it != shots.end(); it++){
+			int shotX = it->getX();
+			int shotY = it->getY();
+			int shotSize = it->getSize();
 			switch(it->getType()){
 				case 0: //bullet
 					glColor4f(0.9, 0.9, 0.9, 1.0);
+					glBegin(GL_POLYGON);		
+						glVertex2f(shotX - shotSize, shotY + shotSize);
+						glVertex2f(shotX + shotSize, shotY + shotSize);
+						glVertex2f(shotX + shotSize, shotY - shotSize);
+						glVertex2f(shotX - shotSize, shotY - shotSize);
+					glEnd();
 					break;
 				case 1: //bomb
 					glColor4f(0.0, 0.9, 0.0, 1.0);
+					glBegin(GL_LINE_LOOP);
+						for(float angle=0; angle<2*pi; angle+=.17){ //.17 ~= 10 degrees
+							glVertex2f(shotX + sin(angle) * shotSize, shotY + cos(angle) * shotSize);
+						}
+					glEnd();
 					break;
 			}
-			int rockX = it->getX();
-			int rockY = it->getY();
-			int rockSize = it->getSize();
-			glBegin(GL_POLYGON);		
-				glVertex2f(rockX - rockSize, rockY + rockSize);
-				glVertex2f(rockX + rockSize, rockY + rockSize);
-				glVertex2f(rockX + rockSize, rockY - rockSize);
-				glVertex2f(rockX - rockSize, rockY - rockSize);
-			glEnd();
+			
+			//glBegin(GL_POLYGON);		
+			//	glVertex2f(rockX - rockSize, rockY + rockSize);
+			//	glVertex2f(rockX + rockSize, rockY + rockSize);
+			//	glVertex2f(rockX + rockSize, rockY - rockSize);
+			//	glVertex2f(rockX - rockSize, rockY - rockSize);
+			//lEnd();
+			
+			//glColor4f(0.0, 0.1, 0.85, opacity);
+	
 		}
 
 	
