@@ -132,7 +132,7 @@ class Ship{
 	
 	void forceSpawn();
 
-	void safeSpawn(std::list<Rock> rocks);
+	void safeSpawn(std::list<Rock*> rocks);
 
 	void draw();
 };

@@ -58,6 +58,14 @@
 		size = n;
 		point = new MyPoint[m];
 	}
+	
+	void Rock::draw(){
+		glBegin(GL_POLYGON);
+			for (int i = 0; i < numPoints; i++){
+				glVertex2f((x + point[i].getX()), y + point[i].getY());
+			}
+		glEnd();
+	}
 
 	float Rock::getMaxRadius(){
 		return maxRadius; 

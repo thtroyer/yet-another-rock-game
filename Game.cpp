@@ -174,7 +174,7 @@
 				std::cout << std::endl;
 			
 				for (int i=0; i<level.getRocks(); i++){
-					rocks.push_back(Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12), randomFloat(-2,2)*pi/50));
+					rocks.push_back(new Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12), randomFloat(-2,2)*pi/50));
 				}
 		}
 		moveShots();
@@ -198,11 +198,9 @@
 	}
 
 	void Game::moveRocks(){
-		for (std::list<Rock>::iterator it = rocks.begin();
-		     it != rocks.end();
-			  it++){
-			it->move(int(deltaTime));
-			it->wrap();
+		for (std::list<Rock*>::iterator it = rocks.begin(); it != rocks.end(); it++){
+			(*it)->move(int(deltaTime));
+			(*it)->wrap();
 		}
 
 	}
@@ -231,11 +229,11 @@
 		bool breakOut = false;
 
 		for (std::list<Shot*>::iterator itS = shots.begin(); itS != shots.end(); itS++){
-			for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
+			for (std::list<Rock*>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
 				float shotX = (*itS)->getX();
 				float shotY = (*itS)->getY();
-				float rockX = itR->getX();
-				float rockY = itR->getY();
+				float rockX = (*itR)->getX();
+				float rockY = (*itR)->getY();
 				float distance = sqrt(pow((shotX-rockX),2) + (pow((shotY-rockY),2)));
 				/*std::cout << "shotX = " << shotX << std::endl;
 				std::cout << "shotY = " << shotY << std::endl;
@@ -243,8 +241,8 @@
 				std::cout << "rockY = " << rockY << std::endl;
 				std::cout << "distance = " << distance << std::endl;*/
 
-				if(distance < itR->getMaxRadius()){
-					int rockSize = itR->getSize();
+				if(distance < (*itR)->getMaxRadius()){
+					int rockSize = (*itR)->getSize();
 
 					if (rockSize > 20){
 						for(int i=0; i<randomInt(1,3); i++){
@@ -252,13 +250,13 @@
 							float ySpeed = randomFloat(-30,30);
 							float angle = randomFloat(0,pi);
 							
-							rocks.push_back(Rock((rockX + randomInt(-20,20)),
+							rocks.push_back(new Rock((rockX + randomInt(-20,20)),
 						   	                  (rockY + randomInt(-20,20)),
-												      (itR->getDx() + (xSpeed * cos(angle))),
-												      (itR->getDy() + (ySpeed * sin(angle))),	
+												      ((*itR)->getDx() + (xSpeed * cos(angle))),
+												      ((*itR)->getDy() + (ySpeed * sin(angle))),	
 												      (rockSize - 10),
 												      (randomInt(6,12)),
-							                     (itR->getdAngle() + randomFloat(-2,2)*pi/50)));
+							                     ((*itR)->getdAngle() + randomFloat(-2,2)*pi/50)));
 						}
 					}		
 					score += 100;
@@ -281,13 +279,13 @@
 		** Collision detection for player
 		*/
 		int i = 0;
-		for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
-			float rockX = itR->getX();
-			float rockY = itR->getY();
+		for (std::list<Rock*>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
+			float rockX = (*itR)->getX();
+			float rockY = (*itR)->getY();
 			float playerX = player.getX();
 			float playerY = player.getY();
 			float distance = sqrt(pow((playerX-rockX),2) + (pow((playerY-rockY),2)));
-			if(distance < (itR->getSize() + player.getSize())){
+			if(distance < ((*itR)->getSize() + player.getSize())){
 				player.die();
 				lives--;
 			}
@@ -301,7 +299,7 @@
 		
 	void Game::keyEvents(){
 		sf::Event Event;
-		const sf::Input& Input = App->GetInput();
+		//const sf::Input& Input = App->GetInput();
 		//multiple keypress problem.
 		while (App->GetEvent(Event)){
 			if(Event.Type == sf::Event::Closed)
@@ -409,12 +407,13 @@
 
 		glColor4f(0.9, 0.9, 0.9, 1.0);
 		//glColor3f(.9, .9, .9);
-		for (std::list<Rock>::iterator it = rocks.begin(); it != rocks.end(); it++){
-			glBegin(GL_POLYGON);
-			for (int i = 0; i < it->getNumPoints(); i++){
-				glVertex2f((it->getX() + it->point[i].getX()), (it->getY() + it->point[i].getY()));
+		for (std::list<Rock*>::iterator it = rocks.begin(); it != rocks.end(); it++){
+			(*it)->draw();
+			/*glBegin(GL_POLYGON);
+			for (int i = 0; i < (*it)->getNumPoints(); i++){
+				glVertex2f(((*it)->getX() + (*it)->point[i].getX()), ((*it)->getY() + (*it)->point[i].getY()));
 			}
-			glEnd();
+			glEnd();*/
 		}
 		
 		/************

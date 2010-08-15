@@ -63,6 +63,8 @@ class Rock{
 
 	Rock(int m, int n);
 	
+	void draw();
+	
 	float getMaxRadius();
 
 	void move(float deltaTime);

@@ -220,7 +220,7 @@
 		reloadTimer = Clock->GetElapsedTime();	
 	}
 
-	void Ship::safeSpawn(std::list<Rock> rocks){
+	void Ship::safeSpawn(std::list<Rock*> rocks){
 		//std::cout << "dead: " << dead << " active: " << active << std::endl;
 		//std::cout << "sdlticks: " << SDL_GetTicks() << " timer: " << spawnTimer << std::endl;
 		
@@ -257,9 +257,9 @@
 			checkSpawnX = randomFloat(minSpawnX, maxSpawnX);
 			checkSpawnY = randomFloat(minSpawnY, maxSpawnY);
 		
-			for (std::list<Rock>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
-				rockX = itR->getX();
-				rockY = itR->getY();
+			for (std::list<Rock*>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
+				rockX = (*itR)->getX();
+				rockY = (*itR)->getY();
 				distance = sqrt(pow((rockX - checkSpawnX),2) + pow((rockY - checkSpawnY),2));
 				if(distance < 50){
 					rockFlag = true;
