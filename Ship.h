@@ -50,12 +50,18 @@ class Ship{
 	float maxThrust;
 	int size;
 	bool dead;
+	bool active;
+	bool jumping;
+	bool returning;
+	
+	
 	sf::Clock* Clock;
 
 	float spawnTimer;
 	//const int spawnTime = 250;
 	
 	WarpEffect* warpSpawn;
+	WarpEffect* warpJump;
 	
 	bool reload;
 	//Uint32 reloadTimer;
@@ -65,8 +71,10 @@ class Ship{
 	//Uint32 deadTimer;
 	float deadTimer;
 	float deadTime;
+	
+	float jumpTimer;
+	float jumpTime;
 
-	bool active;
 	
 	public:
 	
@@ -133,6 +141,9 @@ class Ship{
 
 	bool isDead();
 
+	bool isActive();
+	bool isJumping();
+
 	void spawnShip();
 	
 	void spawnShip(float, float);
@@ -140,6 +151,11 @@ class Ship{
 	void forceSpawn();
 
 	void safeSpawn(std::list<Rock*> rocks);
+	
+	void jump();
+	void jump(bool safe);
+
+	void returnJump();
 
 	void draw();
 };

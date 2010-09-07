@@ -8,6 +8,8 @@
 #include "Ship.h"
 
 	Ship::Ship(){
+
+		
 		Clock = new sf::Clock();
 		Clock->Reset();
 		deadTimer = Clock->GetElapsedTime();
@@ -16,7 +18,9 @@
 		//deadTimer = SDL_GetTicks();
 		//spawnTimer = SDL_GetTicks();
 		//deadTime = deadTimer;
-		active = false;
+		active = true;
+		dead = true;
+		jumping = false;
 		//safeSpawn();
 		spawnShip();
 		point = new MyPoint[3];
@@ -36,7 +40,10 @@
 		}
 		
 		warpSpawn = new WarpEffect();
+		warpJump = new WarpEffect();
 
+	active = true;
+	returning = false;
 		deadTime = 3;
 
 	}
@@ -196,10 +203,19 @@
 		return (dead || !active);
 		//return dead;
 	}
-
+	
+	bool Ship::isActive(){
+		return active;
+	}
+	
+	bool Ship::isJumping(){
+		return jumping;
+	}
 	
 	void Ship::spawnShip(){
 			dead = false;
+			active = true;
+			jumping = false;
 			x = 400;
 			y = 300;
 			dx = 0;
@@ -215,6 +231,8 @@
 	
 	void Ship::spawnShip(float spawnX, float spawnY){
 		dead = false;
+		jumping = false;
+		active = true;
 		x = spawnX;
 		y = spawnY;
 		dx = 0;
@@ -228,8 +246,6 @@
 	}
 	
 	void Ship::forceSpawn(){
-		dead = false;
-		active = true;
 		x = 400;
 		y = 300;
 		dx = 0;
@@ -295,13 +311,47 @@
 		}
 			
 	}
+	
+	void Ship::jump(){
+		//warp(true);
+		//active = false;
+		jumping = true;
+		returning = false;
+		warpJump->initiate(x, y, 250);
+		jumpTime = 2;
+		jumpTimer = Clock->GetElapsedTime() + jumpTime;
+		
+	}
+	
+	void Ship::returnJump(){
+		std::cout << "JUMP" << std::endl;
+		if(!returning && Clock->GetElapsedTime() >= jumpTimer){
+			x = randomInt(0,800);
+			y = randomInt(0,600);
+			dx = randomFloat(-5,5);
+			dy = randomFloat(-5,5);
+			returning = true;
+			warpJump->initiate(x, y, 250);
+		}
+		if(returning && Clock->GetElapsedTime() >= (jumpTimer + .250 )){
+			active = true;
+			jumping = false;
+		}
+		
+	}
+	
+	void Ship::jump(bool safe){
+		//warpSpawn->initiate(x, y);
+	}
 
 	void Ship::draw(){
-		
 		warpSpawn->incAge();
 		warpSpawn->draw();
 		
-		if(!active){
+		warpJump->incAge();
+		warpJump->draw();
+		
+		if(!active || jumping){
 			return;
 		}
 		

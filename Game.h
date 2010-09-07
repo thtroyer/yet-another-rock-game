@@ -71,6 +71,7 @@ class Game{
 	//Keyboard bool array
 	//bool * keyDown;
 	bool KEY_UP, KEY_DOWN, KEY_RIGHT, KEY_LEFT, KEY_SHOOT, KEY_BOMB;
+	bool KEY_JUMP;
 
 	//Player stuff
 	MyLine* line;

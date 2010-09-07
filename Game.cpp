@@ -31,6 +31,7 @@
 		KEY_LEFT = false;
 		KEY_SHOOT = false;
 		KEY_BOMB = false;
+		KEY_JUMP = false;
 
 		App = new sf::RenderWindow(sf::VideoMode(800,600,24), "yarg");
 		Clock = new sf::Clock();
@@ -209,6 +210,9 @@
 		if (player.isDead() && (lives > 0))
 			player.safeSpawn(rocks);
 		
+		if(player.isJumping()){
+			player.returnJump();
+		}
 		
 		player.moveShip(deltaTime);
 		player.wrap();
@@ -329,6 +333,9 @@
 				if(Event.Key.Code == sf::Key::Tab){
 					KEY_BOMB = eventType;
 				}
+				if(Event.Key.Code == sf::Key::W){
+					KEY_JUMP = eventType;
+				}
 			}
 		}
 
@@ -365,6 +372,12 @@
 		}
 		if(KEY_LEFT){
 			player.rotateShip(-pi/3, deltaTime);
+		}
+		if(KEY_JUMP){
+			if(!player.isJumping()){
+				player.jump();
+			}
+			std::cout << "KEY JUMP" << std::endl;
 		}
 		if(KEY_SHOOT){
 		//fix Bullet/Bomb passing
