@@ -1,6 +1,6 @@
 
 /*
-** YARG Ship.h 
+** YARG Ship.h
 **	Copyright Tom Troyer 2010 (tom.troyer@gmail.com)
 ** Released under GPLv3
 ** Some legacy code here too.
@@ -53,16 +53,16 @@ class Ship{
 	bool active;
 	bool jumping;
 	bool returning;
-	
-	
+
+
 	sf::Clock* Clock;
 
 	float spawnTimer;
 	//const int spawnTime = 250;
-	
+
 	WarpEffect* warpSpawn;
 	WarpEffect* warpJump;
-	
+
 	bool reload;
 	//Uint32 reloadTimer;
 	float* reloadTimer;
@@ -71,19 +71,19 @@ class Ship{
 	//Uint32 deadTimer;
 	float deadTimer;
 	float deadTime;
-	
+
 	float jumpTimer;
 	float jumpTime;
 
-	
+
 	public:
-	
+
 	MyPoint* point;
 
 	Ship();
 
 	~Ship();
-	
+
 	float getDx();
 
 	float getDy();
@@ -99,9 +99,9 @@ class Ship{
 	void moveShip(float deltaTime);
 
 	void addThrust(int m, float deltaTime);
-	
 
-	
+
+
 
 	void calcPoints();
 
@@ -110,7 +110,7 @@ class Ship{
 	/*
 	 * getLine() causes memory leak
 	 * coding alternate implementation
-	 * using primitives to pass same 
+	 * using primitives to pass same
 	 * information
 	 */
 
@@ -122,19 +122,19 @@ class Ship{
 	float getCoords(int lineSeg, int pair);
 
 	bool isReloaded();
-	
+
 	bool isReloaded(Shot* shot);
 
 	bool fire();
-	
+
 	bool fire(Shot* shot);
 
 	void wrap();
 
 	float getX();
-	
+
 	float getY();
-	
+
 	int getSize();
 
 	void die();
@@ -145,13 +145,13 @@ class Ship{
 	bool isJumping();
 
 	void spawnShip();
-	
+
 	void spawnShip(float, float);
-	
+
 	void forceSpawn();
 
 	void safeSpawn(std::list<Rock*> rocks);
-	
+
 	void jump();
 	void jump(bool safe);
 

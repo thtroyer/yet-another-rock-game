@@ -19,16 +19,16 @@ using std::string;
 int main(int argc, char **argv){
 
 	Game * game = new Game;
-	
+
 	if(game->init()){
 		std::cout << "Error in game.init()" << std::endl;
 		return 1;
 	}
 
 	game->loop();
-		
+
 //	SDL_Quit();
-	delete game;
+	//delete game;
 
 	return 0;
 }

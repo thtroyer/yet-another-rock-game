@@ -9,7 +9,7 @@
 
 	Ship::Ship(){
 
-		
+
 		Clock = new sf::Clock();
 		Clock->Reset();
 		deadTimer = Clock->GetElapsedTime();
@@ -30,15 +30,15 @@
 		dx = 0;
 		dy = 0;
 		speed = 0;
-		
-		
+
+
 		reloadTime = .200;
 		//reloadTimer = SDL_GetTicks();
 		reloadTimer = new float[10];
 		for (int i = 0; i<10; i++){
 			reloadTimer[i] = Clock->GetElapsedTime();
 		}
-		
+
 		warpSpawn = new WarpEffect();
 		warpJump = new WarpEffect();
 
@@ -52,7 +52,7 @@
 		delete [] point;
 		point = 0;
 	}
-	
+
 	float Ship::getDx(){
 		return dx;
 	}
@@ -60,7 +60,7 @@
 	float Ship::getDy(){
 		return dy;
 	}
-	
+
 
 	float Ship::getAngle(){
 		return angle;
@@ -98,10 +98,10 @@
 
 	MyLine * Ship::getLine(int m){
 		MyLine * tmpLine = new MyLine();
-		
+
 		tmpLine->setX(0,(point[m].getX()));
 		tmpLine->setY(0,(point[m].getY()));
-		
+
 		if(m<2){
 			tmpLine->setX(1,(point[m+1].getX()));
 			tmpLine->setY(1,(point[m+1].getY()));
@@ -112,7 +112,7 @@
 		}
 		return tmpLine;
 	}
-	
+
 	/*
 	 * (line, pair), where line is one of the three lines (takes 0-2)
 	 * and pair returns one of the ordered pairs (takes 0-1)
@@ -136,7 +136,7 @@
 			return true;
 		return false;
 	}
-	
+
 	bool Ship::isReloaded(Shot* shot){
 		if(Clock->GetElapsedTime() >= reloadTimer[shot->getType()])
 			return true;
@@ -153,12 +153,12 @@
 	}
 
 	bool Ship::fire(Shot* shot){
-		if(isReloaded(shot) && !isDead()){
+		if(isReloaded(shot) && !isDead() &&!jumping){
 			reloadTimer[shot->getType()] = Clock->GetElapsedTime() + shot->getReloadTime();
 			return true;
 		}
 		return false;
-	
+
 	}
 
 	void Ship::wrap(){
@@ -178,16 +178,17 @@
 	float Ship::getX(){
 		return x;
 	}
-	
+
 	float Ship::getY(){
 		return y;
 	}
-	
+
 	int Ship::getSize(){
 		return size;
 	}
 
 	void Ship::die(){
+
 		dead = true;
 		active = false;
 		x = -100;
@@ -203,15 +204,15 @@
 		return (dead || !active);
 		//return dead;
 	}
-	
+
 	bool Ship::isActive(){
 		return active;
 	}
-	
+
 	bool Ship::isJumping(){
 		return jumping;
 	}
-	
+
 	void Ship::spawnShip(){
 			dead = false;
 			active = true;
@@ -220,7 +221,7 @@
 			y = 300;
 			dx = 0;
 			dy = 0;
-			angle = pi;	
+			angle = pi;
 			//reloadTimer = SDL_GetTicks();
 			//spawnTimer = SDL_GetTicks() + 250;
 
@@ -228,7 +229,7 @@
 			spawnTimer = Clock->GetElapsedTime() + .250;
 
 	}
-	
+
 	void Ship::spawnShip(float spawnX, float spawnY){
 		dead = false;
 		jumping = false;
@@ -237,14 +238,14 @@
 		y = spawnY;
 		dx = 0;
 		dy = 0;
-		angle = (randomFloat(0,2*pi));	
+		angle = (randomFloat(0,2*pi));
 		//reloadTimer = SDL_GetTicks();
 		//spawnTimer = SDL_GetTicks() + 250;
 		//reloadTimer = Clock->GetElapsedTime();
 		spawnTimer = Clock->GetElapsedTime() + .250;
 
 	}
-	
+
 	void Ship::forceSpawn(){
 		x = 400;
 		y = 300;
@@ -252,13 +253,13 @@
 		dy = 0;
 		angle = pi;
 		//reloadTimer = SDL_GetTicks();
-		//reloadTimer = Clock->GetElapsedTime();	
+		//reloadTimer = Clock->GetElapsedTime();
 	}
 
 	void Ship::safeSpawn(std::list<Rock*> rocks){
 		//std::cout << "dead: " << dead << " active: " << active << std::endl;
 		//std::cout << "sdlticks: " << SDL_GetTicks() << " timer: " << spawnTimer << std::endl;
-		
+
 		if(!dead && !active){
 			//std::cout << "1" << std::endl;
 			//if(SDL_GetTicks() > spawnTimer){
@@ -267,12 +268,12 @@
 			}
 			return;
 		}
-		
+
 		//if (!(SDL_GetTicks() > deadTimer)){
 		if(!(Clock->GetElapsedTime() > deadTimer)){
 			return;
 		}
-	
+
 		bool spawned = false;
 		float distance =0;
 		float rockX = 0;
@@ -281,17 +282,17 @@
 		float maxSpawnX = 650;
 		float minSpawnY = 200;
 		float maxSpawnY = 400;
-		
+
 		float checkSpawnX;
 		float checkSpawnY;
-	
+
 		bool rockFlag;
 
 		while(!spawned){
 			rockFlag = false;
 			checkSpawnX = randomFloat(minSpawnX, maxSpawnX);
 			checkSpawnY = randomFloat(minSpawnY, maxSpawnY);
-		
+
 			for (std::list<Rock*>::iterator itR = rocks.begin(); itR != rocks.end(); itR++){
 				rockX = (*itR)->getX();
 				rockY = (*itR)->getY();
@@ -309,10 +310,19 @@
 			spawnShip(checkSpawnX, checkSpawnY);
 			warpSpawn->initiate(checkSpawnX, checkSpawnY, 250);
 		}
-			
+
 	}
-	
+
 	void Ship::jump(){
+
+	    //When the player 'jumps', the variable "jumping"
+	    //  is set to true.  When the elapsed time is reached,
+	    //  coordinates are chosen for the location,
+        //  "returning" is set to true, and the
+        //  warp animation is started.  After another
+        //  .25 seconds, the player is spawned, and variables
+        //  are reset.
+
 		//warp(true);
 		//active = false;
 		jumping = true;
@@ -320,11 +330,11 @@
 		warpJump->initiate(x, y, 250);
 		jumpTime = 2;
 		jumpTimer = Clock->GetElapsedTime() + jumpTime;
-		
+
 	}
-	
+
 	void Ship::returnJump(){
-		std::cout << "JUMP" << std::endl;
+		//std::cout << "JUMP" << std::endl;
 		if(!returning && Clock->GetElapsedTime() >= jumpTimer){
 			x = randomInt(0,800);
 			y = randomInt(0,600);
@@ -337,9 +347,9 @@
 			active = true;
 			jumping = false;
 		}
-		
+
 	}
-	
+
 	void Ship::jump(bool safe){
 		//warpSpawn->initiate(x, y);
 	}
@@ -347,18 +357,18 @@
 	void Ship::draw(){
 		warpSpawn->incAge();
 		warpSpawn->draw();
-		
+
 		warpJump->incAge();
 		warpJump->draw();
-		
+
 		if(!active || jumping){
 			return;
 		}
-		
+
 		//glColor3f(.9, .9, .9);
-		
+
 		glColor4f(0.9, 0.9, 0.9, 1.0);
-		
+
 		glBegin(GL_LINES);
 			glVertex2f(getCoords(2,0), getCoords(2,1));
 			glVertex2f(getCoords(0,0), getCoords(0,1));
@@ -377,5 +387,5 @@
 			glVertex2f(getCoords(2,0), getCoords(2,1));
 		glEnd();
 
-		
+
 	}
