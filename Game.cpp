@@ -381,7 +381,7 @@
 			if(!player.isJumping()){
 				player.jump();
 			}
-			std::cout << "KEY JUMP" << std::endl;
+			//std::cout << "KEY JUMP" << std::endl;
 		}
 		if(KEY_SHOOT){
 		//fix Bullet/Bomb passing
