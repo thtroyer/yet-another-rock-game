@@ -25,13 +25,18 @@
 
 	bool Game::init(){
 
-		KEY_UP = false;
-		KEY_DOWN = false;
-		KEY_RIGHT = false;
-		KEY_LEFT = false;
-		KEY_SHOOT = false;
-		KEY_BOMB = false;
-		KEY_JUMP = false;
+		
+
+		//box2D init
+		
+		b2Vec2 gravity(0.0f, 0.0f);
+		bool doSleep = false;
+		
+		world = new b2World(gravity, doSleep);
+		
+		createWalls();
+
+		//SFML init
 
 		App = new sf::RenderWindow(sf::VideoMode(800,600,24), "yarg");
 		Clock = new sf::Clock();
@@ -78,6 +83,15 @@
 
 		std::cout << std::endl;
 
+		//Game init
+		
+		KEY_UP = false;
+		KEY_DOWN = false;
+		KEY_RIGHT = false;
+		KEY_LEFT = false;
+		KEY_SHOOT = false;
+		KEY_BOMB = false;
+		KEY_JUMP = false;
 
 		player.calcPoints();
 
@@ -87,13 +101,64 @@
 
 		return 0;
 	}
+	
+	void Game::createWalls(){
+		b2BodyDef bodyDef;
+		b2Body* wall;
+		bodyDef.type = b2_staticBody;
+		b2PolygonShape wallShape;
+		b2FixtureDef wallFix;
+		wallFix.density=0.0f;
+		wallFix.friction = 0.6f;
+		wallFix.restitution = 0.9f;
+		
+		wallShape.SetAsBox(1600/pixelRatio,2/pixelRatio);		
+		
+		bodyDef.position.Set((WINDOW_WIDTH/2)/pixelRatio , WINDOW_HEIGHT/pixelRatio);
+		
+		wall = world->CreateBody(&bodyDef);
+		wallFix.shape= &wallShape;
+		wall->CreateFixture(&wallFix);	
+		
+	    bodyDef.position.Set((WINDOW_WIDTH/2)/pixelRatio , 0/pixelRatio);
+		wall = world->CreateBody(&bodyDef);
+	
+		wall = world->CreateBody(&bodyDef);
+		wallFix.shape= &wallShape;
+		wall->CreateFixture(&wallFix);	
+		
+		
+		wallShape.SetAsBox(2/pixelRatio,1200/pixelRatio);	
+		
+		bodyDef.position.Set((WINDOW_WIDTH)/pixelRatio , (WINDOW_HEIGHT/2)/pixelRatio);
+		
+		wall = world->CreateBody(&bodyDef);
+		wallFix.shape= &wallShape;
+		wall->CreateFixture(&wallFix);	
+		
+		bodyDef.position.Set(0/pixelRatio , (WINDOW_HEIGHT/2)/pixelRatio);
+		
+		wall = world->CreateBody(&bodyDef);
+		wallFix.shape= &wallShape;
+		wall->CreateFixture(&wallFix);	
+		
+		//b2Vec2 initSpeed;
+		//initSpeed.Set(dx * 5/ pixelRatio, dy * 5 / pixelRatio);
+		
+		//body->SetLinearVelocity(initSpeed);
+		//body->SetAngularVelocity(dAngle);
+		
+		//Setup shape
+;
+		
+	}
 
 	void Game::loop(){
 
 		while(App->IsOpened()){
 
-
-			//deltaTime originally designed for miliseconds
+			//calculate deltaTime (time since last frame)
+			//  (deltaTime originally designed for miliseconds)
 			deltaTime = Clock->GetElapsedTime() * 1000;
 			Clock->Reset();
 
@@ -101,6 +166,9 @@
 				deltaTime = 1;
 				std::cout << "Error in deltaTime" << std::endl;
 			}
+			
+			world->Step(deltaTime/1000, 6, 3);
+			world->ClearForces();
 
 			levelEvents();
 
@@ -175,7 +243,7 @@
 				std::cout << std::endl;
 
 				for (int i=0; i<level.getRocks(); i++){
-					rocks.push_back(new Rock(randomInt(0,800),randomInt(0,600), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,12), randomFloat(-2,2)*pi/50));
+					rocks.push_back(new Rock(randomInt(50,750),randomInt(5,550), randomFloat(-2,2), randomFloat(-2,2), 40, randomInt(5,8), randomFloat(-2,2)*pi/50, world));
 				}
 		}
 		moveShots();
@@ -254,15 +322,17 @@
 							float angle = randomFloat(0,pi);
 
 							rocks.push_back(new Rock((rockX + randomInt(-20,20)),
-						   	                  (rockY + randomInt(-20,20)),
-												      ((*itR)->getDx() + (xSpeed * cos(angle))),
-												      ((*itR)->getDy() + (ySpeed * sin(angle))),
-												      (rockSize - 10),
-												      (randomInt(6,9)),
-							                     ((*itR)->getdAngle() + randomFloat(-2,2)*pi/50)));
+						   	                         (rockY + randomInt(-20,20)),
+												     ((*itR)->getDx() + (xSpeed * cos(angle))),
+												     ((*itR)->getDy() + (ySpeed * sin(angle))),
+												     (rockSize - 10),
+												     (randomInt(6,8)),
+							                         ((*itR)->getdAngle() + randomFloat(-2,2)*pi/50), 
+							                         world));
 						}
 					}
 					score += 100;
+					world->DestroyBody((*itR)->getBody());
 					itR = rocks.erase(itR);
 					itS = shots.erase(itS);
 					breakOut = true;
@@ -385,13 +455,21 @@
 		}
 		if(KEY_SHOOT){
 		//fix Bullet/Bomb passing
-			if(player.fire(new Bullet())){
-				shots.push_back(new Bullet(&player, 35.f, 3500));
+			Bullet* b = new Bullet(&player, 35.f, 3500);
+			if(player.fire(b)){
+				shots.push_back(b);
+			}
+			else{
+				delete b;
 			}
 		}
 		if(KEY_BOMB){
-			if(player.fire(new Bomb())){
-				shots.push_back(new Bomb(&player, 35.f, 3500));
+			Bomb* b = new Bomb(&player, 35.f, 3500);
+			if(player.fire(b)){
+				shots.push_back(b);
+			}
+			else{
+				delete b;
 			}
 		}
 
@@ -403,6 +481,47 @@
 		App->SetActive();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+		//draw walls:
+		float x1, x2, y1, y2;
+		float offsetX = 400 - player.getX();
+		float offsetY = 300 - player.getY();
+		
+		glColor4f(0.9, 0.9, 0.9, 1.0);
+		
+		glBegin(GL_LINES);
+			x1 = 0; y1 = 0;
+			x2 = 800; y2 = 0;
+			
+			glVertex2f(x1 + offsetX, y1 + offsetY);
+			glVertex2f(x2 + offsetX, y2 + offsetY);
+		glEnd();
+		
+		glBegin(GL_LINES);
+			x1 = 800; y1 = 0;
+			x2 = 800; y2 = 600;
+			
+			glVertex2f(x1 + offsetX, y1 + offsetY);
+			glVertex2f(x2 + offsetX, y2 + offsetY);
+		glEnd();
+		
+		glBegin(GL_LINES);
+			x1 = 800; y1 = 600;
+			x2 = 0; y2 = 600;
+			
+			glVertex2f(x1 + offsetX, y1 + offsetY);
+			glVertex2f(x2 + offsetX, y2 + offsetY);
+		glEnd();
+		
+		glBegin(GL_LINES);
+			x1 = 0; y1 = 600;
+			x2 = 0; y2 = 0;
+			
+			glVertex2f(x1 + offsetX, y1 + offsetY);
+			glVertex2f(x2 + offsetX, y2 + offsetY);
+		glEnd();
+		
+		
 
 		player.draw();
 		/************
@@ -422,8 +541,10 @@
 
 
 		for (std::list<Rock*>::iterator it = rocks.begin(); it != rocks.end(); it++){
-			(*it)->draw();
+			(*it)->draw(player);
+			//(*it)->draw();
 		}
+
 
 		/************
 		*Draw effects*

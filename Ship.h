@@ -36,6 +36,7 @@
 #include "consts.h"
 
 class Shot;
+class Rock;
 
 class Ship{
 	float x;
@@ -104,6 +105,8 @@ class Ship{
 
 
 	void calcPoints();
+	
+	void calcPoints_old();
 
 	MyLine * getLine(int m);
 

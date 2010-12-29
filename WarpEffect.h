@@ -19,7 +19,6 @@
 
 #include "consts.h"
 
-
 class WarpEffect{
 	float x;
 	float y;
@@ -49,7 +48,7 @@ class WarpEffect{
 	void setAge(int);
 	void setHalfLife(int);
 
-	void draw();
+	void draw(float mX, float mY);
     
 //	void incAge(Uint32 deltaTime);
 	void incAge();

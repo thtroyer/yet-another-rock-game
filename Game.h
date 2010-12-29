@@ -26,6 +26,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <Box2D/Box2D.h>
+
 
 //#include <SDL/SDL.h>
 #include <new>
@@ -56,6 +58,11 @@
 
 class Game{
 	private:
+	//Box2D world
+	
+	b2World* world;
+	
+	
 	/*
 	** Game variables
 	*/
@@ -101,6 +108,7 @@ class Game{
 	bool running();
 	
 	bool init();
+	void createWalls();
 	void events();
 	void doActions();
 

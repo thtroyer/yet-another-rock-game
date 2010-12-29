@@ -21,6 +21,8 @@
 #include <windows.h>
 #endif
 
+#include <Box2D/Box2D.h>
+
 #include <iostream>
 #include <cstdlib>
 
@@ -37,6 +39,9 @@
 
 #include "random.h"
 #include "consts.h"
+#include "Ship.h"
+
+class Ship;
 
 class Rock{
 	float x;
@@ -45,6 +50,8 @@ class Rock{
 	float dy;
 	float maxRadius;
 	float dAngle;
+	
+
 
 	int size;
 	int numPoints;
@@ -54,16 +61,23 @@ class Rock{
 
 	public:
 	MyPoint* point;
+	
+	b2Body* body;
+	b2World* _world;
 
 	Rock();
 
-	Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints, float rotAngle);
+	Rock(float xCoord, float yCoord, float xSpeed, float ySpeed, int rockSize, int rockPoints, float rotAngle, b2World* world);
 	
 	//Rock(float xCoord, float yCoord, float maxSpeed, int rockSize, int rockPoints);
 
 	Rock(int m, int n);
 	
+	~Rock();
+	
 	void draw();
+	
+	void draw(Ship& player);
 	
 	float getMaxRadius();
 
@@ -94,6 +108,8 @@ class Rock{
 	float getDy();
 
 	void rotate(float deltaTime);
+	
+	b2Body* getBody();
 };
 
 #endif

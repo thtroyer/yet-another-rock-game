@@ -12,4 +12,6 @@ const float deltaTimeConst = .005;
 
 const float pi = 3.1415926;
 
+const float pixelRatio = 30;
+
 #endif

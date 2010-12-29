@@ -90,8 +90,24 @@
 		sideAngle[2] = 11 * pi / 6;
 		//add angles, calc points;
 		for (int i=0; i<3; i++){
+			//point[i].setX((size * cos(sideAngle[i] + angle)) + x);
+			//point[i].setY((size * sin(sideAngle[i] + angle)) + y);
+			point[i].setX((size * cos(sideAngle[i] + angle)) + 400);
+			point[i].setY((size * sin(sideAngle[i] + angle)) + 300);
+		}
+	}
+	
+	void Ship::calcPoints_old(){
+		float sideAngle[3];
+		sideAngle[0]= pi/2;
+		sideAngle[1] = 7 * pi / 6;
+		sideAngle[2] = 11 * pi / 6;
+		//add angles, calc points;
+		for (int i=0; i<3; i++){
 			point[i].setX((size * cos(sideAngle[i] + angle)) + x);
 			point[i].setY((size * sin(sideAngle[i] + angle)) + y);
+			//point[i].setX((size * cos(sideAngle[i] + angle)) + 400);
+			//point[i].setY((size * sin(sideAngle[i] + angle)) + 300);
 		}
 	}
 
@@ -131,7 +147,6 @@
 	}
 
 	bool Ship::isReloaded(){ //deprecated
-		//if (SDL_GetTicks() >= reloadTimer)
 		if(Clock->GetElapsedTime() >= reloadTimer[0])
 			return true;
 		return false;
@@ -356,10 +371,10 @@
 
 	void Ship::draw(){
 		warpSpawn->incAge();
-		warpSpawn->draw();
+		warpSpawn->draw(x, y);
 
 		warpJump->incAge();
-		warpJump->draw();
+		warpJump->draw(x, y);
 
 		if(!active || jumping){
 			return;
@@ -367,7 +382,13 @@
 
 		//glColor3f(.9, .9, .9);
 
+		//float offsetX = getX()/pixelRatio;
+		//float offsetY = getY()/pixelRatio;
+
+		//std::cout << "Player X: " << x << " Y: " << y << std::endl;
+
 		glColor4f(0.9, 0.9, 0.9, 1.0);
+
 
 		glBegin(GL_LINES);
 			glVertex2f(getCoords(2,0), getCoords(2,1));
@@ -387,5 +408,26 @@
 			glVertex2f(getCoords(2,0), getCoords(2,1));
 		glEnd();
 
+		//draw old:
 
+		/*calcPoints_old();
+
+		glColor4f(0.0, 1.0, 0.0, 8.0);
+		glBegin(GL_LINES);
+			glVertex2f(getCoords(2,0), getCoords(2,1));
+			glVertex2f(getCoords(0,0), getCoords(0,1));
+		glEnd();
+
+
+		glBegin(GL_LINES);
+			glVertex2f(getCoords(0,0), getCoords(0,1));
+			glVertex2f(getCoords(1,0), getCoords(1,1));
+		glEnd();
+
+		//glColor4f(0.8, 0.1, 0.1, 1.0);
+		//glColor3f(.8, .1, .1);
+		glBegin(GL_LINES);
+			glVertex2f(getCoords(1,0), getCoords(1,1));
+			glVertex2f(getCoords(2,0), getCoords(2,1));
+		glEnd();*/
 	}

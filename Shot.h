@@ -45,6 +45,8 @@ class Shot{
 	//int size;
 	float reloadTime;
 	
+	Ship* owner;
+	
 	
 	int type; //0 = bullet; 1 = bomb
 
@@ -60,14 +62,14 @@ class Shot{
 
 	Shot(float m, int n);
 
-	Shot(Ship* owner, float m, int mAge);
-	Shot(Ship* owner, float m, int mAge, int mType);
+	Shot(Ship* mOwner, float m, int mAge);
+	Shot(Ship* mOwner, float m, int mAge, int mType);
 	
 	Shot();
 	
 	virtual void draw();
 	
-	void fire(Ship* owner);
+	void fire(Ship* mOwner);
 
 	float getX();
 	

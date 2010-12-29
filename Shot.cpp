@@ -24,30 +24,30 @@
 		blank = false;
 	}
 
-	Shot::Shot(Ship* owner, float m, int mAge){
+	Shot::Shot(Ship* mOwner, float m, int mAge){
 		age = 0;
 		maxAge = mAge;
 		speed = m;
 
-		dy = owner->getDy() + (speed * cos(owner->getAngle()));
-		dx = -1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
+		dy = mOwner->getDy() + (speed * cos(mOwner->getAngle()));
+		dx = -1 * (-1 * mOwner->getDx() + (speed * sin(mOwner->getAngle())));
 
-		x = owner->point[0].getX();
-		y = owner->point[0].getY();
+		x = mOwner->point[0].getX() - 400 + mOwner->getX();
+		y = mOwner->point[0].getY() - 300 + mOwner->getY();
 		blank = false;
 	}
 	
-	Shot::Shot(Ship* owner, float m, int mAge, int mType){
+	Shot::Shot(Ship* mOwner, float m, int mAge, int mType){
 		age = 0;
 		maxAge = mAge;
 		speed = m;
 		type = mType;
 		
-		dy = owner->getDy() + (speed * cos(owner->getAngle()));
-		dx = -1 * (-1 * owner->getDx() + (speed * sin(owner->getAngle())));
+		dy = mOwner->getDy() + (speed * cos(mOwner->getAngle()));
+		dx = -1 * (-1 * mOwner->getDx() + (speed * sin(mOwner->getAngle())));
 
-		x = owner->point[0].getX();
-		y = owner->point[0].getY();
+		x = mOwner->point[0].getX();
+		y = mOwner->point[0].getY();
 		blank = false;
 	}
 	
@@ -58,12 +58,12 @@
 	}
 
 
-	void Shot::fire(Ship* owner){
-		dy = owner->getDx() + (speed * cos(owner->getAngle()));
-		dx = -1 * (-1 * owner->getDy() + (speed * sin(owner->getAngle())));
+	void Shot::fire(Ship* mOwner){
+		dy = mOwner->getDx() + (speed * cos(mOwner->getAngle()));
+		dx = -1 * (-1 * mOwner->getDy() + (speed * sin(mOwner->getAngle())));
 
-		x = owner->point[0].getX();
-		y = owner->point[0].getY();
+		x = mOwner->point[0].getX();
+		y = mOwner->point[0].getY();
 
 	}
 

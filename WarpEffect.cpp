@@ -29,9 +29,12 @@ void WarpEffect::setHalfLife(int mHalf){
 	maxAge = halfLife * 2;
 }
 
-void WarpEffect::draw(){
+void WarpEffect::draw(float mX, float mY){
 	//dRadius = 1/x ?
 	//Radius = ln(abs(age)) + C
+	
+	float X = x - mX + 400;
+	float Y = y - mY + 300;
 	
 	//std::cout << "Age: " << age << std::endl;
 	if(!active){
@@ -59,7 +62,7 @@ void WarpEffect::draw(){
 	glColor4f(0.0, 0.1, 0.85, opacity);
 	glBegin(GL_LINE_LOOP);
 	for(float angle=0; angle<2*pi; angle+=.17){ //.17 ~= 10 degrees
-		glVertex2f(x + sin(angle) * radius, y + cos(angle) * radius);
+		glVertex2f(X + sin(angle) * radius, Y + cos(angle) * radius);
 	}
 	glEnd();
 	
@@ -67,7 +70,7 @@ void WarpEffect::draw(){
 	
 	glBegin(GL_LINE_LOOP);
 	for(float angle=0; angle<2*pi; angle+=.17){ //.17 ~= 10 degrees
-		glVertex2f(x + sin(angle) * (radius), y + cos(angle) * (radius));
+		glVertex2f(X + sin(angle) * (radius), Y + cos(angle) * (radius));
 	}
 	glEnd();
 
@@ -75,7 +78,7 @@ void WarpEffect::draw(){
 	
 	glBegin(GL_LINE_LOOP);
 	for(float angle=0; angle<2*pi; angle+=.17){ //.17 ~= 10 degrees
-		glVertex2f(x + sin(angle) * (radius), y + cos(angle) * (radius));
+		glVertex2f(X + sin(angle) * (radius), Y + cos(angle) * (radius));
 	}
 	glEnd();
 }
